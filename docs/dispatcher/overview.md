@@ -1,42 +1,29 @@
 # Dispatcher overview
 
-Flowchart: [Eager op dispatcher stack](../figures/dispatcher_eager_stack.jpg)  
-(also [`dispatcher_eager_stack.svg`](../figures/dispatcher_eager_stack.svg))
+- Mechanism: [`../figures/dispatcher_mechanism.jpg`](../figures/dispatcher_mechanism.jpg)
+- Backend routing: [`../figures/dispatcher_backend_routing.jpg`](../figures/dispatcher_backend_routing.jpg)
+- Eager stack: [`../figures/dispatcher_eager_stack.jpg`](../figures/dispatcher_eager_stack.jpg)
+- Architecture: [`../figures/pytorch_architecture.jpg`](../figures/pytorch_architecture.jpg)
 
-Architecture context: [PyTorch composition](../figures/pytorch_architecture.jpg)
-
-Source anchors (upstream PyTorch tree):
+## Source anchors
 
 | Piece | Path |
 | --- | --- |
 | Dispatch keys | `c10/core/DispatchKey.h` |
 | Dispatcher | `aten/src/ATen/core/dispatch/Dispatcher.h` |
 | Operator entries | `aten/src/ATen/core/dispatch/OperatorEntry.*` |
-| Python dump helpers | `torch/_dispatch/`, `torch.library` |
+| Python helpers | `torch/_dispatch/`, `torch.library` |
 
 ## Boxed vs unboxed
 
-- **Unboxed** `Dispatcher::call`: generated / C++ API, typed args, fast path.
-- **Boxed** `Dispatcher::callBoxed`: stack of IValues (JIT, some Python paths).
+- **Unboxed** `Dispatcher::call` — typed C++ / generated fast path
+- **Boxed** `Dispatcher::callBoxed` — IValue stack (JIT / some Python)
 
-## Typical redispatch
+## Redispatch
 
-Autograd / Functionalize / Python keys often **redispatch** after peeling their key so the math kernel (CPU/CUDA/…) runs underneath.
-
-```text
-call(op, tensors)
-  → AutogradKernel
-       → redispatch(op, tensorsWithoutAutogradKey)
-            → CUDAKernel
-```
-
-## Debug tips
+Wrap keys (Autograd, Functionalize, Python, …) run first, then **redispatch** without that key so the backend kernel (CPU/CUDA/…) executes.
 
 ```python
 import torch
 print(torch._C._dispatch_dump("aten::add.Tensor")[:2000])
-# or explore
-# torch.library / torch._dispatch
 ```
-
-See the main [README](../../README.md) §3 for full eager / compile / distributed stacks.
