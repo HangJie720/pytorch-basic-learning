@@ -1,5 +1,7 @@
 # Figures
 
+Display convention: **width 640px** in Markdown (`<img width="640" …>`). Bitmaps are resized to match.
+
 | File | Topic |
 | --- | --- |
 | `pytorch_architecture.jpg` / `.svg` | Layered composition + `torch.compile` |

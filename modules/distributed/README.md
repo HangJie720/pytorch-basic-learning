@@ -22,7 +22,7 @@ cd modules/distributed
 
 ## 1. AllReduce — `test_allreduce.py` / `run_allreduce.sh`
 
-![AllReduce](images/allreduce.png)
+<img src="images/allreduce.png" width="640" alt="AllReduce" />
 
 *Source: [NCCL Collective Operations — AllReduce](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#allreduce)*
 
@@ -40,7 +40,7 @@ Reduce across all ranks (sum / min / max / …), then leave the **full** result 
 
 ## 2. Broadcast — `test_broadcast.py` / `run_broadcast.sh`
 
-![Broadcast](images/broadcast.png)
+<img src="images/broadcast.png" width="640" alt="Broadcast" />
 
 *Source: [NCCL Collective Operations — Broadcast](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#broadcast)*
 
@@ -58,7 +58,7 @@ Copy a length-`N` buffer from `--root` (default `2`) to every other rank.
 
 ## 3. Reduce — `test_reduce.py` / `run_reduce.sh`
 
-![Reduce](images/reduce.png)
+<img src="images/reduce.png" width="640" alt="Reduce" />
 
 *Source: [NCCL Collective Operations — Reduce](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#reduce)*
 
@@ -76,7 +76,7 @@ Same reduce math as AllReduce, but only `--root` (default `2`) keeps the result.
 
 ## 4. AllGather — `test_allgather.py` / `run_allgather.sh`
 
-![AllGather](images/allgather.png)
+<img src="images/allgather.png" width="640" alt="AllGather" />
 
 *Source: [NCCL Collective Operations — AllGather](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#allgather)*
 
@@ -93,7 +93,7 @@ Each of `k` ranks holds `N` elements. Concatenate into a `k * N` buffer and deli
 
 ## 5. ReduceScatter — `test_reducescatter.py` / `run_reducescatter.sh`
 
-![ReduceScatter](images/reducescatter.png)
+<img src="images/reducescatter.png" width="640" alt="ReduceScatter" />
 
 *Source: [NCCL Collective Operations — ReduceScatter](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#reducescatter)*
 
@@ -110,7 +110,7 @@ Reduce first, then split the result into `k` equal chunks. Rank `Y` keeps only c
 
 ## 6. AlltoAll — `test_alltoall.py` / `run_alltoall.sh`
 
-![AlltoAll](images/alltoall.png)
+<img src="images/alltoall.png" width="640" alt="AlltoAll" />
 
 *Source: [NCCL Collective Operations — AlltoAll](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#alltoall)*
 
@@ -127,7 +127,7 @@ Each rank’s input is `k * N`, split into `k` segments of length `N`. Rank `Y` 
 
 ## 7. Gather — `test_gather.py` / `run_gather.sh`
 
-![Gather](images/gather.png)
+<img src="images/gather.png" width="640" alt="Gather" />
 
 *Source: [NCCL Collective Operations — Gather](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#gather)*
 
@@ -143,7 +143,7 @@ Same concatenation as AllGather, but only `--root` (default `2`) holds the `k * 
 
 ## 8. Scatter — `test_scatter.py` / `run_scatter.sh`
 
-![Scatter](images/scatter.png)
+<img src="images/scatter.png" width="640" alt="Scatter" />
 
 *Source: [NCCL Collective Operations — Scatter](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#scatter)*
 
@@ -167,7 +167,7 @@ Large-scale training often implements AllReduce as ReduceScatter plus AllGather 
 
 ## Call stack (PyTorch)
 
-![Distributed collective call stack](../../docs/figures/distributed_call_stack.jpg)
+<img src="../../docs/figures/distributed_call_stack.jpg" width="640" alt="Distributed collective call stack" />
 
 ---
 

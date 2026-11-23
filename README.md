@@ -2,13 +2,13 @@
 
 Map PyTorch **source layout**, **dispatcher / backends**, and **module call stacks** with small cases under `modules/`.
 
-Figures: [`docs/figures/`](docs/figures/). Upstream paths mean a normal PyTorch tree (`torch/`, `aten/`, `c10/`).
+Figures: [`docs/figures/`](docs/figures/) (display width **640px**). Upstream paths mean a normal PyTorch tree (`torch/`, `aten/`, `c10/`).
 
 ---
 
 ## 1. Architecture
 
-![PyTorch composition](docs/figures/pytorch_architecture.jpg)
+<img src="docs/figures/pytorch_architecture.jpg" width="640" alt="PyTorch composition" />
 
 | Layer | Path |
 | --- | --- |
@@ -18,7 +18,7 @@ Figures: [`docs/figures/`](docs/figures/). Upstream paths mean a normal PyTorch 
 | Libs | `ATen` (ops + Dispatcher) · `c10` (Tensor/Storage/Device/allocator) |
 | Runtime | CUDA / NCCL / drivers |
 
-![torch.compile](docs/figures/torch_compile_flow.jpg)
+<img src="docs/figures/torch_compile_flow.jpg" width="640" alt="torch.compile" />
 
 ---
 
@@ -47,9 +47,9 @@ Figures: [`docs/figures/`](docs/figures/). Upstream paths mean a normal PyTorch 
 
 Eager ops go through the Dispatcher. Kernels are selected by **DispatchKey** / **DispatchKeySet** (`c10/core/DispatchKey.h`).
 
-![Dispatcher mechanism](docs/figures/dispatcher_mechanism.jpg)
+<img src="docs/figures/dispatcher_mechanism.jpg" width="640" alt="Dispatcher mechanism" />
 
-![Backend routing](docs/figures/dispatcher_backend_routing.jpg)
+<img src="docs/figures/dispatcher_backend_routing.jpg" width="640" alt="Backend routing" />
 
 | Idea | Detail |
 | --- | --- |
@@ -58,7 +58,7 @@ Eager ops go through the Dispatcher. Kernels are selected by **DispatchKey** / *
 | Redispatch | wrap keys (Autograd / Functionalize / …) peel themselves and call again |
 | Backend | final key → CPU / CUDA / MPS / XPU / PrivateUse1 / … implementation |
 
-![Eager stack (`torch.add`)](docs/figures/dispatcher_eager_stack.jpg)
+<img src="docs/figures/dispatcher_eager_stack.jpg" width="640" alt="Eager stack torch.add" />
 
 More notes: [`docs/dispatcher/overview.md`](docs/dispatcher/overview.md).
 
@@ -66,40 +66,19 @@ More notes: [`docs/dispatcher/overview.md`](docs/dispatcher/overview.md).
 
 ## 4. Module call stacks
 
-### Tensor
+| Tensor · [`modules/tensor`](modules/tensor/) | Autograd · [`modules/autograd`](modules/autograd/) |
+| --- | --- |
+| <img src="docs/figures/tensor_call_stack.jpg" width="640" alt="Tensor" /> | <img src="docs/figures/autograd_call_stack.jpg" width="640" alt="Autograd" /> |
 
-![Tensor](docs/figures/tensor_call_stack.jpg)
+| NN · [`modules/nn`](modules/nn/) | CUDA · [`modules/cuda`](modules/cuda/) |
+| --- | --- |
+| <img src="docs/figures/nn_call_stack.jpg" width="640" alt="NN" /> | <img src="docs/figures/cuda_call_stack.jpg" width="640" alt="CUDA" /> |
 
-Case: [`modules/tensor`](modules/tensor/)
+**Distributed** · [`modules/distributed`](modules/distributed/) (NCCL diagrams in that README)
 
-### Autograd
+<img src="docs/figures/distributed_call_stack.jpg" width="640" alt="Distributed" />
 
-![Autograd](docs/figures/autograd_call_stack.jpg)
-
-Case: [`modules/autograd`](modules/autograd/)
-
-### NN
-
-![NN](docs/figures/nn_call_stack.jpg)
-
-Case: [`modules/nn`](modules/nn/)
-
-### CUDA
-
-![CUDA](docs/figures/cuda_call_stack.jpg)
-
-Case: [`modules/cuda`](modules/cuda/)
-
-### Distributed
-
-![Distributed](docs/figures/distributed_call_stack.jpg)
-
-Cases + NCCL diagrams: [`modules/distributed`](modules/distributed/)
-
-### Compile / Export
-
-Compile flowchart is in §1. Export sketch: [`modules/export`](modules/export/).  
-c10/ATen reading index: [`modules/c10_aten`](modules/c10_aten/).
+**Compile / Export:** compile figure in §1; export sketch [`modules/export`](modules/export/); c10/ATen index [`modules/c10_aten`](modules/c10_aten/).
 
 ---
 

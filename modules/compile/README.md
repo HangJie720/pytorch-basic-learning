@@ -15,7 +15,7 @@ Where compile sits relative to eager: `_dynamo` → `fx` → `_inductor`, and th
 
 ## Call stack
 
-![torch.compile path](../../docs/figures/torch_compile_flow.jpg)
+<img src="../../docs/figures/torch_compile_flow.jpg" width="640" alt="torch.compile path" />
 
 ## Cases
 
