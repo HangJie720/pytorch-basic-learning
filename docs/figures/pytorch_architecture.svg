@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="920" viewBox="0 0 820 920">
+  <title>PyTorch composition structure</title>
+  <defs>
+    <style>
+      .title { font: 700 20px 'Segoe UI', DejaVu Sans, sans-serif; fill: #1a1a1a; }
+      .layer { font: 600 13px 'Segoe UI', DejaVu Sans, sans-serif; fill: #444; }
+      .box { font: 600 14px 'Segoe UI', DejaVu Sans, sans-serif; fill: #111; }
+      .sub { font: 400 11px 'Segoe UI', DejaVu Sans, sans-serif; fill: #444; }
+      .note { font: 400 11px 'Segoe UI', DejaVu Sans, sans-serif; fill: #555; }
+      .arrow { stroke: #333; stroke-width: 1.8; fill: none; marker-end: url(#arrow); }
+      .arrow-soft { stroke: #666; stroke-width: 1.4; fill: none; marker-end: url(#arrow); stroke-dasharray: 4 3; }
+    </style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#333"/>
+    </marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#fafafa"/>
+
+<text class="title" x="410.0" y="36" text-anchor="middle">PyTorch composition structure</text>
+<rect x="60" y="60" width="700" height="170" rx="10" fill="none" stroke="#888" stroke-width="1.4" stroke-dasharray="6 4"/><text class="layer" x="70" y="78">Python</text>
+<rect x="250" y="95" width="320" height="48" rx="6" fill="#e8f1ff" stroke="#222" stroke-width="1.5"/>
+<text class="box" x="410" y="125" text-anchor="middle">torch/**</text>
+<text class="sub" x="410" y="155" text-anchor="middle">nn · autograd · cuda · distributed · jit · export …</text>
+<rect x="140" y="175" width="540" height="40" rx="6" fill="#fff3e0" stroke="#c97800" stroke-width="1.5"/>
+<text class="box" x="410" y="200" text-anchor="middle">torch.compile:  _dynamo  →  fx  →  _inductor</text>
+<path class="arrow" d="M410,230 L410,265"/>
+<text class="note" x="500" y="255" text-anchor="start">eager / bindings</text>
+<rect x="60" y="270" width="700" height="100" rx="10" fill="none" stroke="#888" stroke-width="1.4" stroke-dasharray="6 4"/><text class="layer" x="70" y="288">Python Native Interface</text>
+<rect x="280" y="305" width="260" height="44" rx="6" fill="#e8f1ff" stroke="#222" stroke-width="1.5"/>
+<text class="box" x="410" y="333" text-anchor="middle">torch/_C</text>
+<path class="arrow" d="M410,370 L410,405"/>
+<rect x="60" y="410" width="700" height="320" rx="10" fill="none" stroke="#888" stroke-width="1.4" stroke-dasharray="6 4"/><text class="layer" x="70" y="428">C++</text>
+<rect x="280" y="450" width="260" height="44" rx="6" fill="#e8f1ff" stroke="#222" stroke-width="1.5"/>
+<text class="box" x="410" y="478" text-anchor="middle">torch/csrc</text>
+<text class="sub" x="410" y="510" text-anchor="middle">autograd · cuda · c10d · jit · dynamo …</text>
+<path class="arrow" d="M320,520 L320,560"/>
+<path class="arrow" d="M500,520 L500,560"/>
+<rect x="140" y="565" width="220" height="90" rx="6" fill="#eaf7ea" stroke="#222" stroke-width="1.5"/>
+<text class="box" x="250" y="600" text-anchor="middle">c10</text>
+<text class="sub" x="250" y="622" text-anchor="middle">Tensor / Storage / Device</text>
+<text class="sub" x="250" y="640" text-anchor="middle">Allocator · Stream · Guard</text>
+<rect x="460" y="565" width="220" height="90" rx="6" fill="#eaf7ea" stroke="#222" stroke-width="1.5"/>
+<text class="box" x="570" y="600" text-anchor="middle">ATen</text>
+<text class="sub" x="570" y="622" text-anchor="middle">Ops + Dispatcher</text>
+<text class="sub" x="570" y="640" text-anchor="middle">native / CUDA / cuDNN</text>
+<path class="arrow" d="M360,610 L460,610"/>
+<text class="note" x="410" y="600" text-anchor="middle">uses</text>
+<path class="arrow-soft" d="M680,195 C760,195 760,610 680,610"/>
+<text class="note" x="745" y="400" text-anchor="middle">compile</text>
+<text class="note" x="745" y="416" text-anchor="middle">fallback</text>
+<path class="arrow" d="M250,655 L250,700"/>
+<path class="arrow" d="M570,655 L570,700"/>
+<rect x="60" y="705" width="700" height="100" rx="10" fill="none" stroke="#888" stroke-width="1.4" stroke-dasharray="6 4"/><text class="layer" x="70" y="723">Native Runtime</text>
+<rect x="220" y="745" width="380" height="40" rx="6" fill="#f3e8ff" stroke="#222" stroke-width="1.5"/>
+<text class="box" x="410" y="770" text-anchor="middle">Syscalls & Drivers  (CUDA / NCCL / …)</text>
+<text class="note" x="410" y="845" text-anchor="middle">Eager: torch/** → _C → csrc → ATen/c10 → drivers</text>
+<text class="note" x="410" y="865" text-anchor="middle">Compile lives in Python (_dynamo/fx/_inductor); may call back into ATen</text>
+</svg>

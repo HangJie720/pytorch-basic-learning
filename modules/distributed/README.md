@@ -167,13 +167,7 @@ Large-scale training often implements AllReduce as ReduceScatter plus AllGather 
 
 ## Call stack (PyTorch)
 
-```text
-torch.distributed.all_reduce / broadcast / …
-  → torch/distributed/distributed_c10d.py
-  → c10d::ProcessGroup
-  → ProcessGroupNCCL
-  → ncclAllReduce / ncclBroadcast / …
-```
+![Distributed collective call stack](../../docs/figures/distributed_call_stack.jpg)
 
 ---
 

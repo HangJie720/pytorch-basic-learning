@@ -6,70 +6,31 @@ This is a draft map of how `torch/**` (Python), `torch/csrc` (bindings), `ATen`,
 
 Upstream paths below refer to a normal PyTorch checkout (e.g. `pytorch/torch`, `pytorch/aten`, `pytorch/c10`).
 
+Flowcharts live under [`docs/figures/`](docs/figures/).
+
 ---
 
 ## 1. Big picture
 
-```text
-                        ┌─────────────────────────────────────────┐
-                        │           Application / training         │
-                        └─────────────────────┬───────────────────┘
-                                              │
-              ┌───────────────────────────────┴───────────────────────────────┐
-              │                         Python layer                            │
-              │  torch/**   nn  autograd  cuda  distributed  jit  export  ... │
-              │                                                               │
-              │  torch.compile path (graph):                                  │
-              │    torch._dynamo  →  torch.fx  →  torch._inductor             │
-              │         │ FX graph / guards          │ kernels / codegen      │
-              └─────────┼────────────────────────────┼────────────────────────┘
-                        │ eager ops                  │ may call back into ATen
-                        ▼                            ▼
-              ┌───────────────────────────────────────────────────────────────┐
-              │              Python ↔ C++ interface                             │
-              │                 torch/_C  (pybind / THP)                       │
-              └─────────────────────────────┬─────────────────────────────────┘
-                                            ▼
-              ┌───────────────────────────────────────────────────────────────┐
-              │                       C++ layer                                │
-              │                    torch/csrc/**                               │
-              │         autograd · cuda · distributed · jit · dynamo …         │
-              │                            │                                   │
-              │              ┌─────────────┴─────────────┐                     │
-              │              ▼                           ▼                     │
-              │           ATen                        c10                      │
-              │   Tensor ops + Dispatcher      Tensor/Storage/Device           │
-              │   native/CUDA/cuDNN/...        Allocator / Stream / Guard      │
-              │              └─────────────┬─────────────┘                     │
-              └────────────────────────────┼──────────────────────────────────┘
-                                           ▼
-              ┌───────────────────────────────────────────────────────────────┐
-              │              Syscalls & drivers (CUDA / NCCL / …)               │
-              └───────────────────────────────────────────────────────────────┘
-```
+![PyTorch composition structure](docs/figures/pytorch_architecture.jpg)
 
-**Eager vs compile (where `torch.compile` lives):**
+| Layer | Path | Role |
+| --- | --- | --- |
+| Python | `torch/**` | Public API: `nn`, `autograd`, `cuda`, `distributed`, `jit`, `export`, … |
+| Compile (in Python) | `_dynamo` → `fx` → `_inductor` | Graph capture / lowering / codegen for `torch.compile` |
+| Native interface | `torch/_C` | pybind / THP bridge into C++ |
+| C++ frontend | `torch/csrc` | Bindings, autograd engine hooks, c10d, JIT, CUDA helpers |
+| Libraries | `ATen` + `c10` | Ops + **Dispatcher**; Tensor/Storage/Device/allocator/stream |
+| Runtime | Syscalls & drivers | CUDA, NCCL, … |
+
+**Eager vs compile**
 
 | Path | Entry | What it does | Lands in |
 | --- | --- | --- | --- |
 | Eager | `torch.add` / `Tensor.method` | Python → `_C` → ATen `Dispatcher` → kernel | `aten` + `c10` |
-| Compile | `torch.compile(fn)` | Capture frames in `_dynamo`, lower via `fx`, generate/run in `_inductor` | Still may call ATen ops / custom kernels; not a separate hardware layer |
+| Compile | `torch.compile(fn)` | Capture in `_dynamo`, lower via `fx`, run in `_inductor` | Generated kernels and/or ATen fallbacks |
 
-```text
-torch.compile(model)
-        │
-        ▼
-torch/_dynamo          # bytecode → FX graph, guards, cache
-        │
-        ▼
-torch/fx               # graph IR, passes
-        │
-        ▼
-torch/_inductor        # scheduling, codegen (Triton/C++/CUDA), runtime
-        │
-        ├──► generated kernels
-        └──► ATen / c10 for fallbacks & library ops
-```
+![torch.compile path](docs/figures/torch_compile_flow.jpg)
 
 ---
 
@@ -137,23 +98,13 @@ torch/_inductor        # scheduling, codegen (Triton/C++/CUDA), runtime
 
 ## 3. Dispatcher (the spine of eager ops)
 
-Almost every eager op eventually hits:
+Almost every eager op eventually hits the stack below. See also [`docs/dispatcher/overview.md`](docs/dispatcher/overview.md).
 
-```text
-Python API
-  → torch/_C binding  (torch/csrc/…)
-  → at::Tensor / at::native wrapper
-  → c10::Dispatcher::call / callBoxed
-  → pick KernelFunction by DispatchKeySet
-  → ATen native / backend kernel
-  → c10 CUDA allocator / stream / driver
-```
+![Eager op dispatcher stack](docs/figures/dispatcher_eager_stack.jpg)
 
 ### 3.1 DispatchKey (why backends fork)
 
 Defined mainly in `c10/core/DispatchKey.h`. A tensor carries a key set (e.g. `CPU`, `CUDA`, `Autograd`, `Functionalize`, `Python`, …). The dispatcher masks and prioritizes keys to choose **one** kernel.
-
-Mental model:
 
 ```text
 Tensor on CUDA + requires_grad
@@ -168,35 +119,16 @@ Tensor on CUDA + requires_grad
 
 Custom backends / privateuse1 plug in extra keys the same way.
 
-### 3.2 Core call stack — `torch.add` (eager, CUDA)
+### 3.2 Notes on the eager stack
 
-Simplified stack (names vary slightly by version):
-
-```text
-torch.add(a, b) / a + b                          # torch/_tensor*.py / _ops
-        │
-        ▼
-THPVariable_add / generated binding              # torch/csrc/autograd/generated or tensor API
-        │
-        ▼
-at::add(a, b)                                    # ATen API
-        │
-        ▼
-c10::Dispatcher::call<…>(op, a, b)               # aten/.../dispatch/Dispatcher.h
-        │  resolve OperatorHandle "aten::add.Tensor"
-        │  compute DispatchKeySet from args
-        ▼
-KernelFunction::call                             # e.g. Autograd → then CUDA
-        │
-        ▼
-at::native::add_cuda / structured cuda kernel    # aten/src/ATen/native/cuda/…
-        │
-        ▼
-c10::cuda::CUDACachingAllocator + current stream # c10/cuda/…
-        │
-        ▼
-CUDA driver / runtime
-```
+| Step | Typical landing |
+| --- | --- |
+| Python API | `torch/_tensor*.py`, `torch/_ops` |
+| Binding | `torch/csrc` / generated THP methods |
+| ATen API | `at::add` etc. |
+| Dispatcher | `aten/src/ATen/core/dispatch/Dispatcher.h` |
+| Kernel | Autograd wrap → `at::native::*` / CUDA / library |
+| Runtime | `c10/cuda/CUDACachingAllocator`, `CUDAStream`, driver |
 
 ### 3.3 Autograd wrap
 
@@ -204,87 +136,51 @@ CUDA driver / runtime
 Dispatcher sees Autograd* key first
         │
         ▼
-autograd node (AddBackward0, …)                  # torch/csrc/autograd/…
-        │  forward: call redispatched math kernel
-        │  save tensors for backward
+autograd node (AddBackward0, …)     # torch/csrc/autograd/…
+        │  forward: redispatched math kernel
         ▼
-Engine::execute on loss.backward()               # torch/csrc/autograd/engine.cpp
+Engine::execute on loss.backward()  # torch/csrc/autograd/engine.cpp
 ```
 
-### 3.4 `nn.Module` forward (high level)
+### 3.4 `nn.Module` forward
 
 ```text
-model.forward / __call__                         # torch/nn/modules/module.py
-        │  hooks, training mode
-        ▼
-F.linear / F.conv2d / …                          # torch/nn/functional.py
-        │
-        ▼
-same Dispatcher path as §3.2
+module(x) → forward hooks → forward() → F.linear / F.conv2d → same Dispatcher path as §3.2
 ```
 
 ### 3.5 CUDA memory / stream touchpoints
 
 ```text
 op kernel launch
-        │
-        ▼
-getCurrentCUDAStream(device)                     # c10/cuda/CUDAStream.cpp
-cudaMalloc / caching allocate                    # c10/cuda/CUDACachingAllocator.cpp
-CUDAGuard / OptionalCUDAGuard                    # c10/cuda/CUDAGuard.h
+  → getCurrentCUDAStream            # c10/cuda/CUDAStream.cpp
+  → CUDACachingAllocator            # c10/cuda/CUDACachingAllocator.cpp
+  → CUDAGuard                       # c10/cuda/CUDAGuard.h
 ```
 
 ### 3.6 Distributed collective (NCCL)
 
-```text
-torch.distributed.all_reduce(t)                  # torch/distributed/distributed_c10d.py
-        │
-        ▼
-ProcessGroupNCCL::allreduce                      # torch/csrc/distributed/c10d/ProcessGroupNCCL.*
-        │
-        ▼
-ncclAllReduce(...)                               # NCCL / vendor CCL
-```
+![Distributed collective call stack](docs/figures/distributed_call_stack.jpg)
 
-See also the eight smoke tests under `modules/distributed/` (and the longer write-up style in local notes on ProcessGroupNCCL).
+See the eight smoke tests under [`modules/distributed/`](modules/distributed/) (each collective has an official NCCL diagram + case description).
 
 ### 3.7 `torch.compile` vs dispatcher
 
-Compile does **not** replace the dispatcher as a concept; it often:
-
-1. Captures Python frames → FX graph (`_dynamo`).
-2. Lowers / fuses / generates kernels (`_inductor`).
-3. Still calls into ATen (dispatcher) for unimplemented / library ops, or emits kernels that bypass per-op Python overhead.
-
-```text
-compiled_fn(*args)
-        │
-        ▼
-inductor runner / cudagraphs (optional)
-        │
-        ├──► fused Triton/CUDA kernel
-        └──► at::ops… → Dispatcher (fallback / decomps)
-```
+Compile does **not** replace the dispatcher. It captures Python → FX (`_dynamo`), lowers/fuses (`_inductor`), and still calls into ATen for fallbacks / library ops (see the compile flowchart in §1).
 
 ---
 
 ## 4. Repo layout (learning modules)
 
-Each directory has a short README and starter cases. Cases are **educational smoke tests**, not a full PyTorch `test/` mirror.
-
 ```text
 pytorch-basic-learning/
-├── README.md                 # this file
-├── docs/dispatcher/          # deeper call-stack notes
+├── README.md
+├── docs/
+│   ├── figures/              # architecture & call-stack flowcharts
+│   └── dispatcher/           # deeper dispatcher notes
 └── modules/
-    ├── tensor/               # storage, stride, view vs copy
-    ├── autograd/             # Function, grad_fn, backward
-    ├── nn/                   # Module / functional
-    ├── cuda/                 # device, stream, allocator signals
-    ├── distributed/          # NCCL collective smoke tests (8-rank)
-    ├── compile/              # torch.compile / dynamo basics
-    ├── export/               # export / fx peek
-    └── c10_aten/             # reading notes tying cases → source paths
+    ├── tensor/ · autograd/ · nn/ · cuda/
+    ├── distributed/ · compile/ · export/
+    └── c10_aten/
 ```
 
 | Module dir | Learn | Starter entry |
@@ -301,10 +197,10 @@ pytorch-basic-learning/
 
 ## 5. How to use
 
-1. Read the diagram in §1 and pick a module in §2.
-2. Open the matching `modules/<name>/README.md`.
-3. Run the starter case; then jump to the listed upstream files with the §3 stacks.
-4. Extend cases as you dig (dispatcher keys, compile counters, NCCL traces, …).
+1. Skim the figures in §1 / §3 (or browse [`docs/figures/`](docs/figures/)).
+2. Pick a module in §2 and open `modules/<name>/README.md`.
+3. Run the starter case; jump to the listed upstream files with the stacks above.
+4. Extend cases as you dig (DispatchKey dumps, compile counters, NCCL traces, …).
 
 ```bash
 git clone git@github.com:HangJie720/pytorch-basic-learning.git
@@ -316,4 +212,4 @@ python case_view_copy.py
 
 ## 6. Status
 
-**Draft v0.** Next iterations can deepen per-op stacks (conv, SDPA, FSDP), add DispatchKey dumps in cases, and wire more of `aten/native` reading guides under `modules/c10_aten/`.
+**Draft v0.** Flowcharts are under `docs/figures/` (JPG + editable SVG). Next: deeper per-op stacks (conv, SDPA, FSDP) and richer DispatchKey dumps in cases.

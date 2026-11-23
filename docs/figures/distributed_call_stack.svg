@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="420" viewBox="0 0 720 420">
+  <title>Distributed collective call stack</title>
+  <defs>
+    <style>
+      .title { font: 700 20px 'Segoe UI', DejaVu Sans, sans-serif; fill: #1a1a1a; }
+      .layer { font: 600 13px 'Segoe UI', DejaVu Sans, sans-serif; fill: #444; }
+      .box { font: 600 14px 'Segoe UI', DejaVu Sans, sans-serif; fill: #111; }
+      .sub { font: 400 11px 'Segoe UI', DejaVu Sans, sans-serif; fill: #444; }
+      .note { font: 400 11px 'Segoe UI', DejaVu Sans, sans-serif; fill: #555; }
+      .arrow { stroke: #333; stroke-width: 1.8; fill: none; marker-end: url(#arrow); }
+      .arrow-soft { stroke: #666; stroke-width: 1.4; fill: none; marker-end: url(#arrow); stroke-dasharray: 4 3; }
+    </style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#333"/>
+    </marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#fafafa"/>
+
+<text class="title" x="360.0" y="36" text-anchor="middle">Distributed collective call stack</text>
+<rect x="140" y="70" width="440" height="42" rx="6" fill="#fff3e0" stroke="#222" stroke-width="1.5"/>
+<text class="box" x="360" y="97" text-anchor="middle">torch.distributed.all_reduce / …</text>
+<path class="arrow" d="M360,112 L360,130"/>
+<rect x="140" y="132" width="440" height="42" rx="6" fill="#e8f1ff" stroke="#222" stroke-width="1.5"/>
+<text class="box" x="360" y="159" text-anchor="middle">torch/distributed/distributed_c10d.py</text>
+<path class="arrow" d="M360,174 L360,192"/>
+<rect x="140" y="194" width="440" height="42" rx="6" fill="#e8f1ff" stroke="#222" stroke-width="1.5"/>
+<text class="box" x="360" y="221" text-anchor="middle">c10d::ProcessGroup</text>
+<path class="arrow" d="M360,236 L360,254"/>
+<rect x="140" y="256" width="440" height="42" rx="6" fill="#e8f1ff" stroke="#222" stroke-width="1.5"/>
+<text class="box" x="360" y="283" text-anchor="middle">ProcessGroupNCCL</text>
+<path class="arrow" d="M360,298 L360,316"/>
+<rect x="140" y="318" width="440" height="42" rx="6" fill="#f3e8ff" stroke="#222" stroke-width="1.5"/>
+<text class="box" x="360" y="345" text-anchor="middle">ncclAllReduce / ncclBroadcast / …</text>
+</svg>

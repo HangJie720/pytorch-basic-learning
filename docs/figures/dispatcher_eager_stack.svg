@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="700" viewBox="0 0 720 700">
+  <title>Eager op dispatcher stack</title>
+  <defs>
+    <style>
+      .title { font: 700 20px 'Segoe UI', DejaVu Sans, sans-serif; fill: #1a1a1a; }
+      .layer { font: 600 13px 'Segoe UI', DejaVu Sans, sans-serif; fill: #444; }
+      .box { font: 600 14px 'Segoe UI', DejaVu Sans, sans-serif; fill: #111; }
+      .sub { font: 400 11px 'Segoe UI', DejaVu Sans, sans-serif; fill: #444; }
+      .note { font: 400 11px 'Segoe UI', DejaVu Sans, sans-serif; fill: #555; }
+      .arrow { stroke: #333; stroke-width: 1.8; fill: none; marker-end: url(#arrow); }
+      .arrow-soft { stroke: #666; stroke-width: 1.4; fill: none; marker-end: url(#arrow); stroke-dasharray: 4 3; }
+    </style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#333"/>
+    </marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#fafafa"/>
+
+<text class="title" x="360.0" y="36" text-anchor="middle">Eager op call stack (e.g. torch.add)</text>
+<rect x="160" y="70" width="400" height="36" rx="6" fill="#e8f1ff" stroke="#222" stroke-width="1.5"/>
+<text class="box" x="360" y="94" text-anchor="middle">Python API  torch.add / a+b</text>
+<path class="arrow" d="M360,106 L360,124"/>
+<rect x="160" y="128" width="400" height="36" rx="6" fill="#e8f1ff" stroke="#222" stroke-width="1.5"/>
+<text class="box" x="360" y="152" text-anchor="middle">torch/_C binding  (torch/csrc)</text>
+<path class="arrow" d="M360,164 L360,182"/>
+<rect x="160" y="186" width="400" height="36" rx="6" fill="#eaf7ea" stroke="#222" stroke-width="1.5"/>
+<text class="box" x="360" y="210" text-anchor="middle">at::add  ATen API</text>
+<path class="arrow" d="M360,222 L360,240"/>
+<rect x="160" y="244" width="400" height="36" rx="6" fill="#fff3e0" stroke="#222" stroke-width="1.5"/>
+<text class="box" x="360" y="268" text-anchor="middle">c10::Dispatcher::call</text>
+<path class="arrow" d="M360,280 L360,298"/>
+<rect x="160" y="302" width="400" height="52" rx="6" fill="#fff3e0" stroke="#222" stroke-width="1.5"/>
+<text class="box" x="360" y="326" text-anchor="middle">Kernel by DispatchKeySet</text>
+<text class="sub" x="360" y="342" text-anchor="middle">(Autograd* → CUDA/CPU …)</text>
+<path class="arrow" d="M360,354 L360,372"/>
+<rect x="160" y="376" width="400" height="36" rx="6" fill="#eaf7ea" stroke="#222" stroke-width="1.5"/>
+<text class="box" x="360" y="400" text-anchor="middle">at::native::* / CUDA / library</text>
+<path class="arrow" d="M360,412 L360,430"/>
+<rect x="160" y="434" width="400" height="36" rx="6" fill="#f3e8ff" stroke="#222" stroke-width="1.5"/>
+<text class="box" x="360" y="458" text-anchor="middle">c10 CUDA allocator / stream</text>
+<path class="arrow" d="M360,470 L360,488"/>
+<rect x="160" y="492" width="400" height="36" rx="6" fill="#f3e8ff" stroke="#222" stroke-width="1.5"/>
+<text class="box" x="360" y="516" text-anchor="middle">CUDA driver / runtime</text>
+</svg>

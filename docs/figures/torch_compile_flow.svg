@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="560" viewBox="0 0 720 560">
+  <title>torch.compile call flow</title>
+  <defs>
+    <style>
+      .title { font: 700 20px 'Segoe UI', DejaVu Sans, sans-serif; fill: #1a1a1a; }
+      .layer { font: 600 13px 'Segoe UI', DejaVu Sans, sans-serif; fill: #444; }
+      .box { font: 600 14px 'Segoe UI', DejaVu Sans, sans-serif; fill: #111; }
+      .sub { font: 400 11px 'Segoe UI', DejaVu Sans, sans-serif; fill: #444; }
+      .note { font: 400 11px 'Segoe UI', DejaVu Sans, sans-serif; fill: #555; }
+      .arrow { stroke: #333; stroke-width: 1.8; fill: none; marker-end: url(#arrow); }
+      .arrow-soft { stroke: #666; stroke-width: 1.4; fill: none; marker-end: url(#arrow); stroke-dasharray: 4 3; }
+    </style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#333"/>
+    </marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#fafafa"/>
+
+<text class="title" x="360.0" y="36" text-anchor="middle">torch.compile path</text>
+<rect x="210" y="70" width="300" height="48" rx="6" fill="#fff3e0" stroke="#c97800" stroke-width="1.5"/>
+<text class="box" x="360.0" y="100" text-anchor="middle">torch.compile(fn)</text>
+<rect x="210" y="160" width="300" height="56" rx="6" fill="#e8f1ff" stroke="#222" stroke-width="1.5"/>
+<text class="box" x="360.0" y="190" text-anchor="middle">torch/_dynamo</text>
+<text class="sub" x="360.0" y="208" text-anchor="middle">bytecode → FX graph, guards, cache</text>
+<rect x="210" y="260" width="300" height="56" rx="6" fill="#e8f1ff" stroke="#222" stroke-width="1.5"/>
+<text class="box" x="360.0" y="290" text-anchor="middle">torch/fx</text>
+<text class="sub" x="360.0" y="308" text-anchor="middle">graph IR & passes</text>
+<rect x="210" y="360" width="300" height="56" rx="6" fill="#e8f1ff" stroke="#222" stroke-width="1.5"/>
+<text class="box" x="360.0" y="390" text-anchor="middle">torch/_inductor</text>
+<text class="sub" x="360.0" y="408" text-anchor="middle">schedule / codegen / runtime</text>
+<path class="arrow" d="M360,118 L360,160"/>
+<path class="arrow" d="M360,216 L360,260"/>
+<path class="arrow" d="M360,316 L360,360"/>
+<rect x="80" y="460" width="220" height="48" rx="6" fill="#eaf7ea" stroke="#222" stroke-width="1.5"/>
+<text class="box" x="190" y="490" text-anchor="middle">generated kernels</text>
+<rect x="420" y="460" width="220" height="48" rx="6" fill="#eaf7ea" stroke="#222" stroke-width="1.5"/>
+<text class="box" x="530" y="490" text-anchor="middle">ATen Dispatcher fallback</text>
+<path class="arrow" d="M250,416 L250,460"/>
+<path class="arrow" d="M470,416 L470,460"/>
+<path class="arrow" d="M360,416 L250,460"/>
+<path class="arrow" d="M360,416 L470,460"/>
+</svg>

@@ -1,5 +1,10 @@
 # Dispatcher overview
 
+Flowchart: [Eager op dispatcher stack](../figures/dispatcher_eager_stack.jpg)  
+(also [`dispatcher_eager_stack.svg`](../figures/dispatcher_eager_stack.svg))
+
+Architecture context: [PyTorch composition](../figures/pytorch_architecture.jpg)
+
 Source anchors (upstream PyTorch tree):
 
 | Piece | Path |

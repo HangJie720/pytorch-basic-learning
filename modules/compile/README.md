@@ -15,12 +15,7 @@ Where compile sits relative to eager: `_dynamo` → `fx` → `_inductor`, and th
 
 ## Call stack
 
-```text
-torch.compile(fn)(…)
-  → dynamo converts frame → FX GraphModule
-  → inductor compiles / runs
-  → fused kernel and/or ATen Dispatcher fallbacks
-```
+![torch.compile path](../../docs/figures/torch_compile_flow.jpg)
 
 ## Cases
 
