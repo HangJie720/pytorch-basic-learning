@@ -4,6 +4,18 @@ Map PyTorch **source layout**, **dispatcher / backends**, and **module call stac
 
 Figures: [`docs/figures/`](docs/figures/) (display width **640px**). Upstream paths mean a normal PyTorch tree (`torch/`, `aten/`, `c10/`).
 
+## Contents
+
+| Jump | What |
+| --- | --- |
+| [1. Architecture](#1-architecture) | Layer map + `torch.compile` |
+| [2. Source map](#2-source-map-short) | `torch/` / `csrc` / `aten` / `c10` |
+| [3. Dispatcher & backends](#3-dispatcher--backends) | DispatchKey, routing, eager stack |
+| [4. Module call stacks](#4-module-call-stacks) | Tensor / Autograd / NN / CUDA / Distributed |
+| [5. Cases](#5-cases) | Runnable entry points |
+
+**Modules:** [tensor](modules/tensor/) · [autograd](modules/autograd/) · [nn](modules/nn/) · [cuda](modules/cuda/) · [c10_aten](modules/c10_aten/) · [distributed](modules/distributed/) ([collectives](modules/distributed/collectives/) · [symmetric](modules/distributed/symmetric/)) · [compile](modules/compile/) · [export](modules/export/)
+
 ---
 
 ## 1. Architecture
