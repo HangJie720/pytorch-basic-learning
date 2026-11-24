@@ -6,19 +6,16 @@ It is meant for people who already use `torch` day to day and want a clearer men
 
 Focus areas:
 
-- **Architecture** — layered map of Python, compile (`_dynamo` / `fx` / `_inductor`), C++ bridge, ATen / c10, and native runtime
+- **Architecture & source map** — layered tree plus where each piece lives upstream
 - **Dispatcher & backends** — how `DispatchKey` / `DispatchKeySet` select and redispatch kernels (CPU / CUDA / PrivateUse1 / …)
-- **Module call stacks** — Tensor, Autograd, `nn.Module`, CUDA runtime, and distributed (collectives + symmetric memory, plus notes on FSDP / mesh / pipeline / RPC / checkpoint)
-- **Cases** — minimal scripts and `torchrun` smoke tests you can run against a normal PyTorch checkout
 
-Path names in the notes refer to a standard upstream PyTorch source tree.
+Path names in the notes refer to a standard upstream PyTorch source tree. Deeper per-module notes and cases live under [`modules/`](modules/).
 
 ## Contents
 
-- [1. Architecture](#1-architecture)
-- [2. Source map](#2-source-map-short)
-- [3. Dispatcher & backends](#3-dispatcher--backends)
-- [4. Module call stacks](#4-module-call-stacks)
+- [1. Architecture & source map](#1-architecture--source-map)
+- [2. Dispatcher & backends](#2-dispatcher--backends)
+- Modules
   - [tensor](modules/tensor/)
   - [autograd](modules/autograd/)
   - [nn](modules/nn/)
@@ -29,19 +26,14 @@ Path names in the notes refer to a standard upstream PyTorch source tree.
     - [symmetric](modules/distributed/symmetric/)
   - [compile](modules/compile/)
   - [export](modules/export/)
-- [5. Cases](#5-cases)
 
 ---
 
-## 1. Architecture
+## 1. Architecture & source map
 
 <img src="docs/figures/pytorch_architecture.jpg" width="640" alt="PyTorch architecture" />
 
 One tree: **Python → Compile (`_dynamo` / `fx` / `_inductor`) → Bridge → Libs (c10 / ATen) → Runtime**, with compile falling back into the Dispatcher when needed.
-
----
-
-## 2. Source map (short)
 
 | Tree | Role |
 | --- | --- |
@@ -62,7 +54,7 @@ One tree: **Python → Compile (`_dynamo` / `fx` / `_inductor`) → Bridge → L
 
 ---
 
-## 3. Dispatcher & backends
+## 2. Dispatcher & backends
 
 Eager ops go through the Dispatcher. Kernels are selected by **DispatchKey** / **DispatchKeySet** (`c10/core/DispatchKey.h`).
 
@@ -80,50 +72,3 @@ Eager ops go through the Dispatcher. Kernels are selected by **DispatchKey** / *
 <img src="docs/figures/dispatcher_eager_stack.jpg" width="640" alt="Eager stack torch.add" />
 
 More notes: [`docs/dispatcher/overview.md`](docs/dispatcher/overview.md).
-
----
-
-## 4. Module call stacks
-
-**Tensor** · [`modules/tensor`](modules/tensor/)
-
-<img src="docs/figures/tensor_call_stack.jpg" width="640" alt="Tensor" />
-
-**Autograd** · [`modules/autograd`](modules/autograd/)
-
-<img src="docs/figures/autograd_call_stack.jpg" width="640" alt="Autograd" />
-
-**NN** · [`modules/nn`](modules/nn/)
-
-<img src="docs/figures/nn_call_stack.jpg" width="640" alt="NN" />
-
-**CUDA** · [`modules/cuda`](modules/cuda/)
-
-<img src="docs/figures/cuda_call_stack.jpg" width="640" alt="CUDA" />
-
-**Distributed** · [`modules/distributed`](modules/distributed/) — `collectives/`, `symmetric/`, plus FSDP / mesh / pipeline / RPC / checkpoint notes
-
-<img src="docs/figures/distributed_call_stack.jpg" width="640" alt="Distributed" />
-
-**Compile / Export / c10_aten:** §1 compile figure; [`modules/export`](modules/export/); [`modules/c10_aten`](modules/c10_aten/) (DispatchKey dump case).
-
----
-
-## 5. Cases
-
-| Module | Entry |
-| --- | --- |
-| `modules/tensor` | `case_view_copy.py`, `case_stride_contiguity.py` |
-| `modules/autograd` | `case_custom_function.py`, `case_grad_fn_chain.py` |
-| `modules/nn` | `case_linear_forward.py`, `case_state_dict.py` |
-| `modules/cuda` | `case_stream_mem.py`, `case_peer_access.py` |
-| `modules/c10_aten` | `case_dispatch_dump.py` |
-| `modules/distributed/collectives` | `./run_allreduce.sh` (8 GPUs) |
-| `modules/distributed/symmetric` | `./run_put_get.sh` (2 GPUs, P2P) |
-| `modules/compile` | `case_compile_basic.py` |
-| `modules/export` | `case_export_basic.py` |
-
-```bash
-git clone git@github.com:HangJie720/pytorch-basic-learning.git
-cd pytorch-basic-learning/modules/tensor && python case_view_copy.py
-```
