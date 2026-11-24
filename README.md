@@ -1,8 +1,17 @@
 # pytorch-basic-learning
 
-Map PyTorch **source layout**, **dispatcher / backends**, and **module call stacks** with small cases under `modules/`.
+This repo is a **source-oriented** guide to how PyTorch is put together and how a single op actually runs — from Python API down through bindings, ATen / c10, the Dispatcher, and into CUDA / NCCL backends.
 
-Figures: [`docs/figures/`](docs/figures/) (display width **640px**; paired call-stacks use **310px**). Tall call-stack diagrams are laid out left-to-right; pastel documentation style unchanged. Upstream paths mean a normal PyTorch tree (`torch/`, `aten/`, `c10/`).
+It is meant for people who already use `torch` day to day and want a clearer mental model of the tree (`torch/`, `torch/csrc/`, `aten/`, `c10/`), not another high-level tutorial. Each topic pairs a short call-stack narrative with a small runnable case under `modules/`, so you can jump from diagram → code path → experiment.
+
+Focus areas:
+
+- **Architecture** — layered map of Python, compile (`_dynamo` / `fx` / `_inductor`), C++ bridge, ATen / c10, and native runtime
+- **Dispatcher & backends** — how `DispatchKey` / `DispatchKeySet` select and redispatch kernels (CPU / CUDA / PrivateUse1 / …)
+- **Module call stacks** — Tensor, Autograd, `nn.Module`, CUDA runtime, and distributed (collectives + symmetric memory, plus notes on FSDP / mesh / pipeline / RPC / checkpoint)
+- **Cases** — minimal scripts and `torchrun` smoke tests you can run against a normal PyTorch checkout
+
+Path names in the notes refer to a standard upstream PyTorch source tree.
 
 ## Contents
 
