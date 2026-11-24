@@ -1,6 +1,8 @@
 # Figures
 
-Display convention: **width 640px** in Markdown (`<img width="640" …>`; **310** when two share a row). Tall call-stack figures use left-to-right layout; keep pastel documentation box style (not chip strips).
+Display width **640px** in Markdown (`310` when two share a row).
+
+**Style canon:** match `dispatcher_mechanism.jpg` / `dispatcher_backend_routing.jpg` — pastel fills with matching colored borders, rounded boxes, dark-blue arrows, numbered steps, bold titles + short subtitles, flat light background. Prefer left-to-right for long call stacks.
 
 | File | Topic |
 | --- | --- |
