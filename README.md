@@ -2,7 +2,7 @@
 
 Map PyTorch **source layout**, **dispatcher / backends**, and **module call stacks** with small cases under `modules/`.
 
-Figures: [`docs/figures/`](docs/figures/) (display width **640px**). Upstream paths mean a normal PyTorch tree (`torch/`, `aten/`, `c10/`).
+Figures: [`docs/figures/`](docs/figures/) — **LTR flat** flows, display width **640px** (module pairs use **310px** so two fit one row). Upstream paths mean a normal PyTorch tree (`torch/`, `aten/`, `c10/`).
 
 ## Contents
 
@@ -80,11 +80,11 @@ More notes: [`docs/dispatcher/overview.md`](docs/dispatcher/overview.md).
 
 | Tensor · [`modules/tensor`](modules/tensor/) | Autograd · [`modules/autograd`](modules/autograd/) |
 | --- | --- |
-| <img src="docs/figures/tensor_call_stack.jpg" width="640" alt="Tensor" /> | <img src="docs/figures/autograd_call_stack.jpg" width="640" alt="Autograd" /> |
+| <img src="docs/figures/tensor_call_stack.jpg" width="310" alt="Tensor" /> | <img src="docs/figures/autograd_call_stack.jpg" width="310" alt="Autograd" /> |
 
 | NN · [`modules/nn`](modules/nn/) | CUDA · [`modules/cuda`](modules/cuda/) |
 | --- | --- |
-| <img src="docs/figures/nn_call_stack.jpg" width="640" alt="NN" /> | <img src="docs/figures/cuda_call_stack.jpg" width="640" alt="CUDA" /> |
+| <img src="docs/figures/nn_call_stack.jpg" width="310" alt="NN" /> | <img src="docs/figures/cuda_call_stack.jpg" width="310" alt="CUDA" /> |
 
 **Distributed** · [`modules/distributed`](modules/distributed/) — `collectives/`, `symmetric/`, plus FSDP / mesh / pipeline / RPC / checkpoint notes
 

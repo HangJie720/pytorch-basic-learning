@@ -1,6 +1,6 @@
 # Figures
 
-Display convention: **width 640px** in Markdown (`<img width="640" …>`). Bitmaps are resized to match.
+Display convention: flowcharts are **left-to-right (LTR) flat** one-row diagrams; Markdown uses `<img width="640" …>` (or `310` when two share a row).
 
 | File | Topic |
 | --- | --- |
