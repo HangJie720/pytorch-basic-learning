@@ -35,17 +35,9 @@ Path names in the notes refer to a standard upstream PyTorch source tree.
 
 ## 1. Architecture
 
-<img src="docs/figures/pytorch_architecture.jpg" width="640" alt="PyTorch composition" />
+<img src="docs/figures/pytorch_architecture.jpg" width="640" alt="PyTorch architecture" />
 
-| Layer | Path |
-| --- | --- |
-| Python | `torch/**` |
-| Compile | `_dynamo` → `fx` → `_inductor` |
-| Bridge | `torch/_C` ← `torch/csrc` |
-| Libs | `ATen` (ops + Dispatcher) · `c10` (Tensor/Storage/Device/allocator) |
-| Runtime | CUDA / NCCL / drivers |
-
-<img src="docs/figures/torch_compile_flow.jpg" width="640" alt="torch.compile" />
+One tree: **Python → Compile (`_dynamo` / `fx` / `_inductor`) → Bridge → Libs (c10 / ATen) → Runtime**, with compile falling back into the Dispatcher when needed.
 
 ---
 

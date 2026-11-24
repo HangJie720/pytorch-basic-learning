@@ -7,8 +7,8 @@ top-down **tree** layout, pastel fills with matching borders, rounded boxes, int
 
 | File | Topic |
 | --- | --- |
-| `pytorch_architecture.jpg` / `.svg` | Layered composition + `torch.compile` |
-| `torch_compile_flow.jpg` / `.svg` | `_dynamo` → `fx` → `_inductor` |
+| `pytorch_architecture.jpg` | Full tree: Python → Compile → Bridge → Libs → Runtime |
+| `torch_compile_flow.jpg` | Compile subtree only (`_dynamo` → `fx` → `_inductor`) |
 | `dispatcher_mechanism.jpg` | OperatorHandle, key set, redispatch loop |
 | `dispatcher_backend_routing.jpg` | DispatchKey → Autograd / CUDA / CPU / PrivateUse1 |
 | `dispatcher_eager_stack.jpg` / `.svg` | Eager `torch.add` stack |
