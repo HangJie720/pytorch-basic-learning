@@ -93,13 +93,21 @@ More notes: [`docs/dispatcher/overview.md`](docs/dispatcher/overview.md).
 
 ## 4. Module call stacks
 
-| Tensor · [`modules/tensor`](modules/tensor/) | Autograd · [`modules/autograd`](modules/autograd/) |
-| --- | --- |
-| <img src="docs/figures/tensor_call_stack.jpg" width="310" alt="Tensor" /> | <img src="docs/figures/autograd_call_stack.jpg" width="310" alt="Autograd" /> |
+**Tensor** · [`modules/tensor`](modules/tensor/)
 
-| NN · [`modules/nn`](modules/nn/) | CUDA · [`modules/cuda`](modules/cuda/) |
-| --- | --- |
-| <img src="docs/figures/nn_call_stack.jpg" width="310" alt="NN" /> | <img src="docs/figures/cuda_call_stack.jpg" width="310" alt="CUDA" /> |
+<img src="docs/figures/tensor_call_stack.jpg" width="640" alt="Tensor" />
+
+**Autograd** · [`modules/autograd`](modules/autograd/)
+
+<img src="docs/figures/autograd_call_stack.jpg" width="640" alt="Autograd" />
+
+**NN** · [`modules/nn`](modules/nn/)
+
+<img src="docs/figures/nn_call_stack.jpg" width="640" alt="NN" />
+
+**CUDA** · [`modules/cuda`](modules/cuda/)
+
+<img src="docs/figures/cuda_call_stack.jpg" width="640" alt="CUDA" />
 
 **Distributed** · [`modules/distributed`](modules/distributed/) — `collectives/`, `symmetric/`, plus FSDP / mesh / pipeline / RPC / checkpoint notes
 

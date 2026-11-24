@@ -1,8 +1,9 @@
 # Figures
 
-Display width **640px** in Markdown (`310` when two share a row).
+Display width **640px** in Markdown (full width; avoid squeezing trees into half-width columns).
 
-**Style canon:** match `dispatcher_mechanism.jpg` / `dispatcher_backend_routing.jpg` — pastel fills with matching colored borders, rounded boxes, dark-blue arrows, numbered steps, bold titles + short subtitles, flat light background. Prefer left-to-right for long call stacks.
+**Style canon:** match `dispatcher_backend_routing.jpg` (and `dispatcher_mechanism.jpg`) —
+top-down **tree** layout, pastel fills with matching borders, rounded boxes, internal title/subtitle dividers, dark-blue orthogonal arrows, flat white background. Spine nodes then branch to leaves where the path forks.
 
 | File | Topic |
 | --- | --- |
