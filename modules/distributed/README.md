@@ -2,15 +2,15 @@
 
 PyTorch distributed learning cases, **one subdir per topic**.
 
-| Subdir | Focus | Entry |
-| --- | --- | --- |
-| [`collectives/`](collectives/) | Eight NCCL collective smoke tests | `cd collectives && ./run_allreduce.sh` |
-| [`symmetric/`](symmetric/) | Symmetric memory put/get + signal | `cd symmetric && ./run_put_get.sh` (2 GPUs, P2P) |
-| [`fsdp/`](fsdp/) | Fully Sharded Data Parallel (notes + diagram) | README |
-| [`device_mesh/`](device_mesh/) | DeviceMesh / DTensor | README |
-| [`pipelining/`](pipelining/) | Pipeline parallelism | README |
-| [`rpc/`](rpc/) | RPC + distributed autograd | README |
-| [`checkpoint/`](checkpoint/) | Distributed checkpoint | README |
+## Contents
+
+- [collectives](collectives/) — eight NCCL collective smoke tests
+- [symmetric](symmetric/) — symmetric memory put/get + signal (2 GPUs, P2P)
+- [fsdp](fsdp/) — Fully Sharded Data Parallel
+- [device_mesh](device_mesh/) — DeviceMesh / DTensor
+- [pipelining](pipelining/) — pipeline parallelism
+- [rpc](rpc/) — RPC + distributed autograd
+- [checkpoint](checkpoint/) — distributed checkpoint
 
 Call stack (collectives path):
 

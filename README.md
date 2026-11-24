@@ -6,15 +6,21 @@ Figures: [`docs/figures/`](docs/figures/) (display width **640px**; paired call-
 
 ## Contents
 
-| Jump | What |
-| --- | --- |
-| [1. Architecture](#1-architecture) | Layer map + `torch.compile` |
-| [2. Source map](#2-source-map-short) | `torch/` / `csrc` / `aten` / `c10` |
-| [3. Dispatcher & backends](#3-dispatcher--backends) | DispatchKey, routing, eager stack |
-| [4. Module call stacks](#4-module-call-stacks) | Tensor / Autograd / NN / CUDA / Distributed |
-| [5. Cases](#5-cases) | Runnable entry points |
-
-**Modules:** [tensor](modules/tensor/) · [autograd](modules/autograd/) · [nn](modules/nn/) · [cuda](modules/cuda/) · [c10_aten](modules/c10_aten/) · [distributed](modules/distributed/) ([collectives](modules/distributed/collectives/) · [symmetric](modules/distributed/symmetric/)) · [compile](modules/compile/) · [export](modules/export/)
+- [1. Architecture](#1-architecture)
+- [2. Source map](#2-source-map-short)
+- [3. Dispatcher & backends](#3-dispatcher--backends)
+- [4. Module call stacks](#4-module-call-stacks)
+  - [tensor](modules/tensor/)
+  - [autograd](modules/autograd/)
+  - [nn](modules/nn/)
+  - [cuda](modules/cuda/)
+  - [c10_aten](modules/c10_aten/)
+  - [distributed](modules/distributed/)
+    - [collectives](modules/distributed/collectives/)
+    - [symmetric](modules/distributed/symmetric/)
+  - [compile](modules/compile/)
+  - [export](modules/export/)
+- [5. Cases](#5-cases)
 
 ---
 
