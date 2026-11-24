@@ -1,6 +1,6 @@
 # Figures
 
-Display convention: **width 640px** in Markdown (`<img width="640" …>`). Bitmaps are resized to match.
+Display convention: **width 640px** in Markdown (`<img width="640" …>`; **310** when two share a row). Tall call-stack figures use left-to-right layout; keep pastel documentation box style (not chip strips).
 
 | File | Topic |
 | --- | --- |
