@@ -74,7 +74,7 @@ More notes: [`docs/dispatcher/overview.md`](docs/dispatcher/overview.md).
 | --- | --- |
 | <img src="docs/figures/nn_call_stack.jpg" width="640" alt="NN" /> | <img src="docs/figures/cuda_call_stack.jpg" width="640" alt="CUDA" /> |
 
-**Distributed** · [`modules/distributed`](modules/distributed/) (NCCL diagrams in that README)
+**Distributed** · [`modules/distributed`](modules/distributed/) → collectives in [`collectives/`](modules/distributed/collectives/)
 
 <img src="docs/figures/distributed_call_stack.jpg" width="640" alt="Distributed" />
 
@@ -90,7 +90,7 @@ More notes: [`docs/dispatcher/overview.md`](docs/dispatcher/overview.md).
 | `modules/autograd` | `python case_custom_function.py` |
 | `modules/nn` | `python case_linear_forward.py` |
 | `modules/cuda` | `python case_stream_mem.py` |
-| `modules/distributed` | `./run_allreduce.sh` (8 GPUs) |
+| `modules/distributed/collectives` | `./run_allreduce.sh` (8 GPUs) |
 | `modules/compile` | `python case_compile_basic.py` |
 | `modules/export` | `python case_export_basic.py` |
 
