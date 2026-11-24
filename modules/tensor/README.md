@@ -1,27 +1,27 @@
 # tensor
 
-## What to learn
+## Diagrams
 
-Storage, stride, dtype, device, **view vs copy**.
+<img src="images/view_vs_clone.png" width="640" alt="view vs clone" />
 
-## Upstream map
-
-| Topic | Path |
-| --- | --- |
-| Python Tensor | `torch/_tensor.py` |
-| TensorImpl / Storage | `c10/core/TensorImpl.h`, `StorageImpl.h` |
-| View ops | `aten/src/ATen/native/TensorShape.cpp` |
-
-## Call stack (view)
-
-```text
-t.view(...) / t.reshape(...)
-  → binding in torch/csrc
-  → at::view / at::reshape
-  → Dispatcher → native view kernel
-  → new TensorImpl sharing Storage (view) or allocating (copy path)
-```
+<img src="images/dispatch_add.png" width="640" alt="add dispatch" />
 
 ## Cases
 
-- `case_view_copy.py` — prove view shares storage; `clone` does not.
+| Case | Idea |
+| --- | --- |
+| `case_view_copy.py` | view shares Storage; clone does not |
+| `case_stride_contiguity.py` | transpose strides / contiguous() |
+
+```bash
+cd modules/tensor
+TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_view_copy.py
+TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_stride_contiguity.py
+```
+
+## Upstream
+
+| Topic | Path |
+| --- | --- |
+| TensorImpl | `c10/core/TensorImpl.h` |
+| Shape ops | `aten/src/ATen/native/TensorShape.cpp` |

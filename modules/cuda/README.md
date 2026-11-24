@@ -1,27 +1,30 @@
 # cuda
 
-## What to learn
+## Diagrams
 
-Device, current stream, caching allocator signals.
+<img src="images/stream_stack.png" width="640" alt="stream stack" />
 
-## Upstream map
+<img src="images/p2p_vs_copy.png" width="640" alt="P2P vs copy" />
+
+## Cases
+
+| Case | Idea |
+| --- | --- |
+| `case_stream_mem.py` | explicit stream + memory stats |
+| `case_peer_access.py` | print CUDA P2P matrix (for symmetric mem) |
+
+```bash
+cd modules/cuda
+TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_stream_mem.py
+TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_peer_access.py
+```
+
+## Upstream
 
 | Topic | Path |
 | --- | --- |
-| Python API | `torch/cuda/__init__.py` |
 | Streams | `c10/cuda/CUDAStream.cpp` |
 | Allocator | `c10/cuda/CUDACachingAllocator.cpp` |
 | Guards | `c10/cuda/CUDAGuard.h` |
 
-## Call stack
-
-```text
-torch.cuda.Stream / tensor.cuda()
-  → torch/csrc/cuda bindings
-  → c10::cuda::getCurrentCUDAStream / CUDACachingAllocator
-  → CUDA runtime
-```
-
-## Cases
-
-- `case_stream_mem.py` — allocate on CUDA, print mem stats (skips if no GPU).
+See also [`../distributed/symmetric/`](../distributed/symmetric/).

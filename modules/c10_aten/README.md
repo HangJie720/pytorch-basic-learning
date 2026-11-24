@@ -1,25 +1,28 @@
-# c10 + ATen reading guide
+# c10 + ATen
 
-No runtime cases here — this folder indexes **source landing spots** while you study other modules.
+Reading guide + a Dispatcher dump case. Pair with root README dispatcher figures.
 
-## c10
+## Diagram
+
+<img src="images/dispatch_keys.png" width="640" alt="DispatchKey selection" />
+
+## Case
+
+| Case | Idea |
+| --- | --- |
+| `case_dispatch_dump.py` | print kernel table for `aten::add.Tensor` |
+
+```bash
+cd modules/c10_aten
+TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_dispatch_dump.py
+```
+
+## Source anchors
 
 | Concern | Files |
 | --- | --- |
 | Tensor / Storage | `c10/core/TensorImpl.*`, `Storage*` |
-| Device / Stream concepts | `c10/core/Device.*`, `c10/cuda/CUDAStream.*` |
-| Allocator | `c10/cuda/CUDACachingAllocator.*` |
-| DispatchKey | `c10/core/DispatchKey.h`, `DispatchKeySet.*` |
-
-## ATen
-
-| Concern | Files |
-| --- | --- |
+| DispatchKey | `c10/core/DispatchKey.h` |
 | Dispatcher | `aten/src/ATen/core/dispatch/Dispatcher.*` |
-| Native CPU | `aten/src/ATen/native/` |
 | CUDA kernels | `aten/src/ATen/native/cuda/` |
-| BLAS | `aten/src/ATen/cuda/CUDABlas.cpp` |
-| cuDNN conv | `aten/src/ATen/native/cudnn/Conv_v7.cpp` |
 | Attention | `aten/src/ATen/native/transformers/attention.cpp` |
-
-Work through `modules/tensor` → `autograd` → `nn` → `cuda`, then open these files with the call stacks in the root README.

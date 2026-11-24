@@ -74,11 +74,11 @@ More notes: [`docs/dispatcher/overview.md`](docs/dispatcher/overview.md).
 | --- | --- |
 | <img src="docs/figures/nn_call_stack.jpg" width="640" alt="NN" /> | <img src="docs/figures/cuda_call_stack.jpg" width="640" alt="CUDA" /> |
 
-**Distributed** · [`modules/distributed`](modules/distributed/) → collectives in [`collectives/`](modules/distributed/collectives/)
+**Distributed** · [`modules/distributed`](modules/distributed/) — `collectives/`, `symmetric/`, plus FSDP / mesh / pipeline / RPC / checkpoint notes
 
 <img src="docs/figures/distributed_call_stack.jpg" width="640" alt="Distributed" />
 
-**Compile / Export:** compile figure in §1; export sketch [`modules/export`](modules/export/); c10/ATen index [`modules/c10_aten`](modules/c10_aten/).
+**Compile / Export / c10_aten:** §1 compile figure; [`modules/export`](modules/export/); [`modules/c10_aten`](modules/c10_aten/) (DispatchKey dump case).
 
 ---
 
@@ -86,13 +86,15 @@ More notes: [`docs/dispatcher/overview.md`](docs/dispatcher/overview.md).
 
 | Module | Entry |
 | --- | --- |
-| `modules/tensor` | `python case_view_copy.py` |
-| `modules/autograd` | `python case_custom_function.py` |
-| `modules/nn` | `python case_linear_forward.py` |
-| `modules/cuda` | `python case_stream_mem.py` |
+| `modules/tensor` | `case_view_copy.py`, `case_stride_contiguity.py` |
+| `modules/autograd` | `case_custom_function.py`, `case_grad_fn_chain.py` |
+| `modules/nn` | `case_linear_forward.py`, `case_state_dict.py` |
+| `modules/cuda` | `case_stream_mem.py`, `case_peer_access.py` |
+| `modules/c10_aten` | `case_dispatch_dump.py` |
 | `modules/distributed/collectives` | `./run_allreduce.sh` (8 GPUs) |
-| `modules/compile` | `python case_compile_basic.py` |
-| `modules/export` | `python case_export_basic.py` |
+| `modules/distributed/symmetric` | `./run_put_get.sh` (2 GPUs, P2P) |
+| `modules/compile` | `case_compile_basic.py` |
+| `modules/export` | `case_export_basic.py` |
 
 ```bash
 git clone git@github.com:HangJie720/pytorch-basic-learning.git

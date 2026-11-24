@@ -1,26 +1,27 @@
 # nn
 
-## What to learn
+## Diagrams
 
-`nn.Module`, parameter registration, `forward`, functional API.
+<img src="images/module_forward.png" width="640" alt="module forward" />
 
-## Upstream map
+<img src="images/param_register.png" width="640" alt="parameter registration" />
+
+## Cases
+
+| Case | Idea |
+| --- | --- |
+| `case_linear_forward.py` | `nn.Linear` vs `F.linear` |
+| `case_state_dict.py` | `state_dict` round-trip |
+
+```bash
+cd modules/nn
+TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_linear_forward.py
+TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_state_dict.py
+```
+
+## Upstream
 
 | Topic | Path |
 | --- | --- |
 | Module | `torch/nn/modules/module.py` |
 | Functional | `torch/nn/functional.py` |
-| Linear / Conv kernels | `aten/src/ATen/native/` (+ `cuda/`, `cudnn/`) |
-
-## Call stack
-
-```text
-module(x)  # __call__
-  → forward hooks
-  → forward() → F.linear / F.conv2d
-  → Dispatcher → ATen native / cuDNN / CUDABlas
-```
-
-## Cases
-
-- `case_linear_forward.py` — one Linear vs `F.linear` numerics.

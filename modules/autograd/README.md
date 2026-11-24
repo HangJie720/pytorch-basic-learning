@@ -1,29 +1,27 @@
 # autograd
 
-## What to learn
+## Diagrams
 
-Forward graph recording, `grad_fn`, custom `Function`, backward engine.
+<img src="images/backward_stack.png" width="640" alt="backward stack" />
 
-## Upstream map
-
-| Topic | Path |
-| --- | --- |
-| Python API | `torch/autograd/__init__.py`, `function.py` |
-| Engine | `torch/csrc/autograd/engine.cpp` |
-| Variable / Node | `torch/csrc/autograd/` |
-
-## Call stack
-
-```text
-y = f(x); y.backward()
-  → Autograd meta on tensors (grad_fn chain)
-  → Engine::execute
-  → Node::apply (saved tensors)
-  → accumulated .grad on leaves
-```
-
-During forward, Dispatcher hits `Autograd*` keys before math kernels (see repo README §3.3).
+<img src="images/custom_function.png" width="640" alt="custom Function" />
 
 ## Cases
 
-- `case_custom_function.py` — minimal `torch.autograd.Function`.
+| Case | Idea |
+| --- | --- |
+| `case_custom_function.py` | minimal `torch.autograd.Function` |
+| `case_grad_fn_chain.py` | print `grad_fn` / `next_functions` |
+
+```bash
+cd modules/autograd
+TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_custom_function.py
+TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_grad_fn_chain.py
+```
+
+## Upstream
+
+| Topic | Path |
+| --- | --- |
+| Python API | `torch/autograd/` |
+| Engine | `torch/csrc/autograd/engine.cpp` |
