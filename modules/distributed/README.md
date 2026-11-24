@@ -1,6 +1,11 @@
 # distributed — NCCL collectives
 
-Eight 8-rank smoke tests, one per NCCL collective. Diagrams below are from the **NVIDIA NCCL User Guide** (no watermark). Layout and expected values match each `test_*.py`.
+Eight 8-rank smoke tests, one per NCCL collective.
+
+For each case below:
+
+1. **Official diagram** — NVIDIA NCCL User Guide (no watermark), width 640  
+2. **Case diagram** — this repo’s inputs / expected values for `test_*.py`, width 640  
 
 ## How to run
 
@@ -22,9 +27,13 @@ cd modules/distributed
 
 ## 1. AllReduce — `test_allreduce.py` / `run_allreduce.sh`
 
-<img src="images/allreduce.png" width="640" alt="AllReduce" />
+<img src="images/allreduce.png" width="640" alt="AllReduce official" />
 
-*Source: [NCCL Collective Operations — AllReduce](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#allreduce)*
+*Official: [NCCL AllReduce](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#allreduce)*
+
+<img src="images/case_allreduce.png" width="640" alt="AllReduce case" />
+
+*Case: this repo’s check layout*
 
 Reduce across all ranks (sum / min / max / …), then leave the **full** result on every rank.
 
@@ -40,11 +49,15 @@ Reduce across all ranks (sum / min / max / …), then leave the **full** result 
 
 ## 2. Broadcast — `test_broadcast.py` / `run_broadcast.sh`
 
-<img src="images/broadcast.png" width="640" alt="Broadcast" />
+<img src="images/broadcast.png" width="640" alt="Broadcast official" />
 
-*Source: [NCCL Collective Operations — Broadcast](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#broadcast)*
+*Official: [NCCL Broadcast](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#broadcast)*
 
-Copy a length-`N` buffer from `--root` (default `2`) to every other rank.
+<img src="images/case_broadcast.png" width="640" alt="Broadcast case" />
+
+*Case: this repo’s check layout (`--root` default 2)*
+
+Copy a length-`N` buffer from `--root` to every other rank.
 
 | | |
 | --- | --- |
@@ -58,11 +71,15 @@ Copy a length-`N` buffer from `--root` (default `2`) to every other rank.
 
 ## 3. Reduce — `test_reduce.py` / `run_reduce.sh`
 
-<img src="images/reduce.png" width="640" alt="Reduce" />
+<img src="images/reduce.png" width="640" alt="Reduce official" />
 
-*Source: [NCCL Collective Operations — Reduce](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#reduce)*
+*Official: [NCCL Reduce](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#reduce)*
 
-Same reduce math as AllReduce, but only `--root` (default `2`) keeps the result. Non-root buffers are not checked.
+<img src="images/case_reduce.png" width="640" alt="Reduce case" />
+
+*Case: this repo’s check layout (`--root` default 2)*
+
+Same reduce math as AllReduce, but only `--root` keeps the result. Non-root buffers are not checked.
 
 | | |
 | --- | --- |
@@ -76,9 +93,13 @@ Same reduce math as AllReduce, but only `--root` (default `2`) keeps the result.
 
 ## 4. AllGather — `test_allgather.py` / `run_allgather.sh`
 
-<img src="images/allgather.png" width="640" alt="AllGather" />
+<img src="images/allgather.png" width="640" alt="AllGather official" />
 
-*Source: [NCCL Collective Operations — AllGather](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#allgather)*
+*Official: [NCCL AllGather](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#allgather)*
+
+<img src="images/case_allgather.png" width="640" alt="AllGather case" />
+
+*Case: this repo’s check layout*
 
 Each of `k` ranks holds `N` elements. Concatenate into a `k * N` buffer and deliver that full buffer to **every** rank, ordered by rank id.
 
@@ -93,9 +114,13 @@ Each of `k` ranks holds `N` elements. Concatenate into a `k * N` buffer and deli
 
 ## 5. ReduceScatter — `test_reducescatter.py` / `run_reducescatter.sh`
 
-<img src="images/reducescatter.png" width="640" alt="ReduceScatter" />
+<img src="images/reducescatter.png" width="640" alt="ReduceScatter official" />
 
-*Source: [NCCL Collective Operations — ReduceScatter](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#reducescatter)*
+*Official: [NCCL ReduceScatter](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#reducescatter)*
+
+<img src="images/case_reducescatter.png" width="640" alt="ReduceScatter case" />
+
+*Case: this repo’s check layout*
 
 Reduce first, then split the result into `k` equal chunks. Rank `Y` keeps only chunk `Y`.
 
@@ -110,9 +135,13 @@ Reduce first, then split the result into `k` equal chunks. Rank `Y` keeps only c
 
 ## 6. AlltoAll — `test_alltoall.py` / `run_alltoall.sh`
 
-<img src="images/alltoall.png" width="640" alt="AlltoAll" />
+<img src="images/alltoall.png" width="640" alt="AlltoAll official" />
 
-*Source: [NCCL Collective Operations — AlltoAll](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#alltoall)*
+*Official: [NCCL AlltoAll](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#alltoall)*
+
+<img src="images/case_alltoall.png" width="640" alt="AlltoAll case" />
+
+*Case: this repo’s check layout*
 
 Each rank’s input is `k * N`, split into `k` segments of length `N`. Rank `Y` sends segment `X` to rank `X`. Rank `X` stores the chunk from rank `Y` in slot `Y`.
 
@@ -127,11 +156,15 @@ Each rank’s input is `k * N`, split into `k` segments of length `N`. Rank `Y` 
 
 ## 7. Gather — `test_gather.py` / `run_gather.sh`
 
-<img src="images/gather.png" width="640" alt="Gather" />
+<img src="images/gather.png" width="640" alt="Gather official" />
 
-*Source: [NCCL Collective Operations — Gather](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#gather)*
+*Official: [NCCL Gather](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#gather)*
 
-Same concatenation as AllGather, but only `--root` (default `2`) holds the `k * N` result.
+<img src="images/case_gather.png" width="640" alt="Gather case" />
+
+*Case: this repo’s check layout (`--root` default 2)*
+
+Same concatenation as AllGather, but only `--root` holds the `k * N` result.
 
 | | |
 | --- | --- |
@@ -143,11 +176,15 @@ Same concatenation as AllGather, but only `--root` (default `2`) holds the `k * 
 
 ## 8. Scatter — `test_scatter.py` / `run_scatter.sh`
 
-<img src="images/scatter.png" width="640" alt="Scatter" />
+<img src="images/scatter.png" width="640" alt="Scatter official" />
 
-*Source: [NCCL Collective Operations — Scatter](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#scatter)*
+*Official: [NCCL Scatter](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html#scatter)*
 
-`--root` (default `2`) holds `k * N` elements, splits into `k` chunks of length `N`, and sends chunk `X` to rank `X`.
+<img src="images/case_scatter.png" width="640" alt="Scatter case" />
+
+*Case: this repo’s check layout (`--root` default 2)*
+
+`--root` holds `k * N` elements, splits into `k` chunks of length `N`, and sends chunk `X` to rank `X`.
 
 | | |
 | --- | --- |
@@ -175,7 +212,7 @@ Large-scale training often implements AllReduce as ReduceScatter plus AllGather 
 
 ### Official docs & diagrams
 
-- [NCCL Collective Operations](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html) — diagrams used in this README (`images/*.png`)
+- [NCCL Collective Operations](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/usage/collectives.html) — official diagrams (`images/{op}.png`)
 - [NCCL User Guide](https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/)
 - [PyTorch Distributed Overview](https://pytorch.org/tutorials/beginner/dist_overview.html)
 - [PyTorch `torch.distributed` collectives](https://pytorch.org/docs/stable/distributed.html)
@@ -199,4 +236,5 @@ Large-scale training often implements AllReduce as ReduceScatter plus AllGather 
 
 ### Image credit
 
-Collective diagrams under `images/` are copied from the NVIDIA NCCL User Guide for local offline reading. Prefer linking the upstream docs when sharing externally; NVIDIA retains copyright on those assets.
+- `images/{op}.png` — NVIDIA NCCL User Guide  
+- `images/case_*.png` — drawn for this repo’s smoke tests (width 640)
