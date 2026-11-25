@@ -27,7 +27,7 @@ Training loops typically: forward → loss → `backward` → optimizer on
 | `case_state_dict.py` | `state_dict` round-trip |
 
 ```bash
-cd modules/nn
+cd nn
 TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_linear_forward.py
 TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_state_dict.py
 ```

@@ -115,7 +115,7 @@ debugging capture completeness.
 - `case_compile_basic.py` — eager vs compile on a tiny MLP (skips if compile unavailable).
 
 ```bash
-cd modules/compile
+cd compile
 python case_compile_basic.py
 ```
 

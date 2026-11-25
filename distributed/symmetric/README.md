@@ -33,7 +33,7 @@ PyTorch API: `torch.distributed._symmetric_memory` (and `_SymmetricMemory` in c1
 3. Rank 1 `put_signal(0)`; rank 0 `wait_signal(1)` and asserts all `42`.
 
 ```bash
-cd modules/distributed/symmetric
+cd distributed/symmetric
 ./run_put_get.sh
 ```
 

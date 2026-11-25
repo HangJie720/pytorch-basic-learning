@@ -52,7 +52,6 @@ emphasize DispatchKeys as the portable routing layer across devices.
 | CUDA kernels | `aten/src/ATen/native/cuda/` |
 | Python helpers | `torch/_dispatch/`, `torch.library` |
 
-More notes: [`../../docs/dispatcher/overview.md`](../../docs/dispatcher/overview.md)
 
 ## Cases
 
@@ -61,7 +60,7 @@ More notes: [`../../docs/dispatcher/overview.md`](../../docs/dispatcher/overview
 | `case_dispatch_dump.py` | print kernel table for `aten::add.Tensor` |
 
 ```bash
-cd modules/c10_aten
+cd c10_aten
 TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_dispatch_dump.py
 ```
 

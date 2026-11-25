@@ -10,7 +10,7 @@ For each case below:
 ## How to run
 
 ```bash
-cd modules/distributed/collectives
+cd distributed/collectives
 ./run_allreduce.sh
 ./run_broadcast.sh --N 4096 --root 2 --dtype float16
 ```

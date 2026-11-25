@@ -27,7 +27,7 @@ trace it ahead of time — see [`../compile`](../compile/).
 | `case_grad_fn_chain.py` | print `grad_fn` / `next_functions` |
 
 ```bash
-cd modules/autograd
+cd autograd
 TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_custom_function.py
 TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_grad_fn_chain.py
 ```

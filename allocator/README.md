@@ -88,7 +88,7 @@ has been evolving in upstream (checkpoint / restore of mapped state).
 | `case_expandable_segments.py` | enable expandable segments; print related stats |
 
 ```bash
-cd modules/allocator
+cd allocator
 python case_caching_stats.py
 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True python case_expandable_segments.py
 ```

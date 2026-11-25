@@ -80,7 +80,7 @@ during capture so addresses remain valid on replay (see [`../allocator`](../allo
 - `case_cudagraph_basic.py` — capture a tiny CUDA MLP once, replay, compare to eager (skips if no CUDA).
 
 ```bash
-cd modules/cudagraph
+cd cudagraph
 python case_cudagraph_basic.py
 ```
 

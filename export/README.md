@@ -33,7 +33,7 @@ torch.export.export(model, args)
 - `case_export_basic.py` — export a tiny module when available.
 
 ```bash
-cd modules/export
+cd export
 python case_export_basic.py
 ```
 

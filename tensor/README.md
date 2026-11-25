@@ -27,7 +27,7 @@ device placement of the tensor determines which backend kernel runs.
 | `case_stride_contiguity.py` | transpose strides / contiguous() |
 
 ```bash
-cd modules/tensor
+cd tensor
 TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_view_copy.py
 TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_stride_contiguity.py
 ```

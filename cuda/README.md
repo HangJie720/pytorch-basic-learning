@@ -27,7 +27,7 @@ in [`../allocator`](../allocator/), graphs in [`../cudagraph`](../cudagraph/).
 | `case_peer_access.py` | print CUDA P2P matrix (for symmetric mem) |
 
 ```bash
-cd modules/cuda
+cd cuda
 TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_stream_mem.py
 TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_peer_access.py
 ```
