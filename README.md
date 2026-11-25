@@ -1,8 +1,8 @@
 # pytorch-basic-learning
 
 Source-oriented architecture diagrams for how PyTorch is put together — from
-Python APIs through bindings, ATen / c10, the Dispatcher, compile, CUDA Graphs,
-and distributed runtimes.
+Python APIs through bindings, ATen / c10, the Dispatcher, compile, CUDA memory
+allocator, CUDA Graphs, and distributed runtimes.
 
 Path names refer to a normal upstream PyTorch tree (`torch/`, `torch/csrc/`,
 `aten/`, `c10/`). Deeper notes and small cases live under [`modules/`](modules/).
@@ -12,8 +12,9 @@ Path names refer to a normal upstream PyTorch tree (`torch/`, `torch/csrc/`,
 - [1. Overall architecture](#1-overall-architecture)
 - [2. torch.compile](#2-torchcompile)
 - [3. Dispatcher & backends](#3-dispatcher--backends)
-- [4. CUDA Graph](#4-cuda-graph)
-- [5. Distributed](#5-distributed)
+- [4. CUDA Caching Allocator](#4-cuda-caching-allocator)
+- [5. CUDA Graph](#5-cuda-graph)
+- [6. Distributed](#6-distributed)
 
 ---
 
@@ -58,7 +59,18 @@ Module: [`modules/c10_aten`](modules/c10_aten/) · notes: [`docs/dispatcher/over
 
 ---
 
-## 4. CUDA Graph
+## 4. CUDA Caching Allocator
+
+<img src="docs/figures/allocator_architecture.jpg" width="640" alt="CUDACachingAllocator architecture" />
+
+`CUDACachingAllocator`: small/large pools, stream-ordered free, **expandable
+segments** (`cuMemCreate` / `cuMemMap`), and graph private pools.
+
+Module: [`modules/allocator`](modules/allocator/)
+
+---
+
+## 5. CUDA Graph
 
 <img src="docs/figures/cuda_graph_architecture.jpg" width="640" alt="CUDA Graph architecture" />
 
@@ -69,7 +81,7 @@ Module: [`modules/cudagraph`](modules/cudagraph/)
 
 ---
 
-## 5. Distributed
+## 6. Distributed
 
 <img src="docs/figures/distributed_architecture.jpg" width="640" alt="Distributed architecture" />
 

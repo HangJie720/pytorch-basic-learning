@@ -24,7 +24,7 @@ TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_peer_access.py
 | Topic | Path |
 | --- | --- |
 | Streams | `c10/cuda/CUDAStream.cpp` |
-| Allocator | `c10/cuda/CUDACachingAllocator.cpp` |
 | Guards | `c10/cuda/CUDAGuard.h` |
 
-See also [`../distributed/symmetric/`](../distributed/symmetric/).
+Allocator details: [`../allocator/`](../allocator/).  
+Symmetric memory / P2P: [`../distributed/symmetric/`](../distributed/symmetric/).

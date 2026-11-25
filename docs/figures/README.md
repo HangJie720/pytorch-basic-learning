@@ -12,6 +12,7 @@ top-down **tree** layout, pastel fills with matching borders, rounded boxes, int
 | `dispatcher_mechanism.jpg` | OperatorHandle, key set, redispatch loop |
 | `dispatcher_backend_routing.jpg` | DispatchKey → Autograd / CUDA / CPU / PrivateUse1 |
 | `dispatcher_eager_stack.jpg` | Eager `torch.add` stack |
+| `allocator_architecture.jpg` | CUDACachingAllocator pools · expandable segments · graph pools |
 | `cuda_graph_architecture.jpg` | CUDAGraph capture → replay / Inductor cudagraphs |
 | `distributed_architecture.jpg` | ProcessGroup backends + FSDP / mesh / pipeline / RPC |
 | `distributed_call_stack.jpg` | Collective path: c10d → NCCL |
