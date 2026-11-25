@@ -22,6 +22,25 @@ blog:
 - NCCL collectives can participate in graphs so multi-GPU launches stay
   tightly clustered (less jitter across ranks).
 
+## Eager vs graph (official blog figure)
+
+The blog’s Figure 1 is the clearest picture of *why* graphs help: many
+individual launches leave **GPU idle gaps** (launch latency); a single graph
+launch packs the same kernels with those gaps removed.
+
+<img src="images/fig_eager_vs_graph.png" width="640" alt="Eager many launches vs CUDA Graph single launch (PyTorch blog)" />
+
+<p><em>Source:
+<a href="https://pytorch.org/blog/accelerating-pytorch-with-cuda-graphs/">Accelerating PyTorch with CUDA Graphs</a>
+(PyTorch Blog).</em></p>
+
+With NCCL support, compute + collective launches can sit inside the same
+captured graph so ranks stay synchronized without extra host-side jitter:
+
+<img src="images/fig_nccl_in_graph.png" width="640" alt="NCCL collectives inside CUDA Graphs (PyTorch blog)" />
+
+<p><em>Same blog — NCCL-in-graph timeline.</em></p>
+
 ## How capture works in PyTorch
 
 1. Warm up once (allocator / cuDNN algo selection) **outside** capture.
@@ -36,7 +55,7 @@ Constraints (graph-safety): fixed tensor addresses and shapes, limited host
 sync, careful use of RNG / CPU ops. The caching allocator uses a **private pool**
 during capture so addresses remain valid on replay (see [`../allocator`](../allocator/)).
 
-<img src="images/cuda_graph_architecture.jpg" width="640" alt="CUDA Graph architecture" />
+<img src="images/cuda_graph_architecture.jpg" width="640" alt="CUDA Graph eager-vs-graph narrative and capture/replay lifecycle" />
 
 ## Relation to `torch.compile`
 
@@ -67,7 +86,17 @@ python case_cudagraph_basic.py
 
 ## References
 
-- [Accelerating PyTorch with CUDA Graphs](https://pytorch.org/blog/accelerating-pytorch-with-cuda-graphs/) — stream capture, replay, NCCL-in-graph
+### PyTorch docs & blog
+
+- [Accelerating PyTorch with CUDA Graphs](https://pytorch.org/blog/accelerating-pytorch-with-cuda-graphs/) — stream capture, replay, NCCL-in-graph, DLRM speedups (figures above)
 - [Accelerating Generative AI with PyTorch IV](https://pytorch.org/blog/accelerating-generative-ai-4/) — compile + CUDA Graph pointer/shape constraints
-- [CUDA semantics](https://pytorch.org/docs/stable/notes/cuda.html) — graphs + allocator interaction
+- [`torch.cuda.CUDAGraph`](https://pytorch.org/docs/stable/generated/torch.cuda.CUDAGraph.html) — `capture_begin` / `capture_end` / `replay`
+- [`torch.cuda.graph`](https://pytorch.org/docs/stable/generated/torch.cuda.graph.html) — context-manager capture
+- [`torch.cuda.make_graphed_callables`](https://pytorch.org/docs/stable/generated/torch.cuda.make_graphed_callables.html) — wrap modules/functions for graph replay
+- [CUDA semantics](https://pytorch.org/docs/stable/notes/cuda.html) — graphs + caching allocator / private pools
 - [CUDA Graph Trees (Inductor)](https://pytorch.org/docs/stable/torch.compiler_cudagraph_trees.html) — related compile-side graph management
+
+### NVIDIA
+
+- [CUDA C++ Programming Guide — Graph Execution](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#graph-execution) — `cudaStreamBeginCapture` / `cudaGraphLaunch`
+- [CUDA Best Practices — Graph](https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html#graph) — when graphs help vs when not
