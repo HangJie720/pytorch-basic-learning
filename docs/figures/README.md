@@ -8,12 +8,14 @@ top-down **tree** layout, pastel fills with matching borders, rounded boxes, int
 | File | Topic |
 | --- | --- |
 | `pytorch_architecture.jpg` | Full tree: Python → Compile → Bridge → Libs → Runtime |
-| `torch_compile_flow.jpg` | Compile subtree only (`_dynamo` → `fx` → `_inductor`) |
+| `torch_compile_flow.jpg` | Compile subtree (`_dynamo` → `fx` → `_inductor`) |
 | `dispatcher_mechanism.jpg` | OperatorHandle, key set, redispatch loop |
 | `dispatcher_backend_routing.jpg` | DispatchKey → Autograd / CUDA / CPU / PrivateUse1 |
-| `dispatcher_eager_stack.jpg` / `.svg` | Eager `torch.add` stack |
-| `tensor_call_stack.jpg` | view / Storage |
-| `autograd_call_stack.jpg` | `backward` → Engine → Node |
-| `nn_call_stack.jpg` | `Module` → functional → Dispatcher |
-| `cuda_call_stack.jpg` | stream / allocator / driver |
-| `distributed_call_stack.jpg` / `.svg` | c10d → NCCL |
+| `dispatcher_eager_stack.jpg` | Eager `torch.add` stack |
+| `cuda_graph_architecture.jpg` | CUDAGraph capture → replay / Inductor cudagraphs |
+| `distributed_architecture.jpg` | ProcessGroup backends + FSDP / mesh / pipeline / RPC |
+| `distributed_call_stack.jpg` | Collective path: c10d → NCCL |
+| `tensor_call_stack.jpg` | view / Storage (module detail) |
+| `autograd_call_stack.jpg` | `backward` → Engine → Node (module detail) |
+| `nn_call_stack.jpg` | `Module` → functional → Dispatcher (module detail) |
+| `cuda_call_stack.jpg` | stream / allocator / driver (module detail) |
