@@ -1,8 +1,14 @@
 # c10 + ATen
 
-Reading guide + a Dispatcher dump case. Pair with root README dispatcher figures.
+Reading guide + a Dispatcher dump case.
 
-## Diagram
+## Diagrams
+
+<img src="images/dispatcher_mechanism.jpg" width="640" alt="Dispatcher mechanism" />
+
+<img src="images/dispatcher_backend_routing.jpg" width="640" alt="Backend routing" />
+
+<img src="images/dispatcher_eager_stack.jpg" width="640" alt="Eager torch.add stack" />
 
 <img src="images/dispatch_keys.png" width="640" alt="DispatchKey selection" />
 

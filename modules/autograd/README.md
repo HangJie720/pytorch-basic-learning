@@ -2,6 +2,8 @@
 
 ## Diagrams
 
+<img src="images/autograd_call_stack.jpg" width="640" alt="Autograd call stack" />
+
 <img src="images/backward_stack.png" width="640" alt="backward stack" />
 
 <img src="images/custom_function.png" width="640" alt="custom Function" />

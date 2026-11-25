@@ -2,6 +2,8 @@
 
 ## Diagrams
 
+<img src="images/nn_call_stack.jpg" width="640" alt="nn.Module call stack" />
+
 <img src="images/module_forward.png" width="640" alt="module forward" />
 
 <img src="images/param_register.png" width="640" alt="parameter registration" />

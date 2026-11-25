@@ -16,7 +16,7 @@ CPU sync) and how Inductor can emit cudagraphs under `torch.compile`.
 
 ## Architecture
 
-<img src="../../docs/figures/cuda_graph_architecture.jpg" width="640" alt="CUDA Graph architecture" />
+<img src="images/cuda_graph_architecture.jpg" width="640" alt="CUDA Graph architecture" />
 
 ## Cases
 

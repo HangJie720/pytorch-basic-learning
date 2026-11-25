@@ -204,7 +204,7 @@ Large-scale training often implements AllReduce as ReduceScatter plus AllGather 
 
 ## Call stack (PyTorch)
 
-<img src="../../../docs/figures/distributed_call_stack.jpg" width="640" alt="Distributed collective call stack" />
+<img src="../images/distributed_call_stack.jpg" width="640" alt="Distributed collective call stack" />
 
 ---
 

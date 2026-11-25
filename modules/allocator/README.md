@@ -18,7 +18,7 @@ capture-safe / private pools used by CUDA Graphs.
 
 ## Architecture
 
-<img src="../../docs/figures/allocator_architecture.jpg" width="640" alt="CUDACachingAllocator architecture" />
+<img src="images/allocator_architecture.jpg" width="640" alt="CUDACachingAllocator architecture" />
 
 ### Core pieces
 

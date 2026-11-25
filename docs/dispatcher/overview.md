@@ -1,9 +1,9 @@
 # Dispatcher overview
 
-- Mechanism: [`../figures/dispatcher_mechanism.jpg`](../figures/dispatcher_mechanism.jpg)
-- Backend routing: [`../figures/dispatcher_backend_routing.jpg`](../figures/dispatcher_backend_routing.jpg)
-- Eager stack: [`../figures/dispatcher_eager_stack.jpg`](../figures/dispatcher_eager_stack.jpg)
-- Architecture: [`../figures/pytorch_architecture.jpg`](../figures/pytorch_architecture.jpg)
+- Mechanism: [`../../modules/c10_aten/images/dispatcher_mechanism.jpg`](../../modules/c10_aten/images/dispatcher_mechanism.jpg)
+- Backend routing: [`../../modules/c10_aten/images/dispatcher_backend_routing.jpg`](../../modules/c10_aten/images/dispatcher_backend_routing.jpg)
+- Eager stack: [`../../modules/c10_aten/images/dispatcher_eager_stack.jpg`](../../modules/c10_aten/images/dispatcher_eager_stack.jpg)
+- Architecture: [`../../modules/architecture/images/pytorch_architecture.jpg`](../../modules/architecture/images/pytorch_architecture.jpg)
 
 ## Source anchors
 

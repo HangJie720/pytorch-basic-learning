@@ -12,8 +12,10 @@ PyTorch distributed learning cases, **one subdir per topic**.
 - [rpc](rpc/) — RPC + distributed autograd
 - [checkpoint](checkpoint/) — distributed checkpoint
 
-Call stack (collectives path):
+## Architecture
 
-<img src="../../docs/figures/distributed_call_stack.jpg" width="640" alt="Distributed collective call stack" />
+<img src="images/distributed_architecture.jpg" width="640" alt="Distributed architecture" />
+
+<img src="images/distributed_call_stack.jpg" width="640" alt="Distributed collective call stack" />
 
 Start with **collectives**, then **symmetric** to contrast two-sided vs one-sided communication. FSDP/mesh/pipeline build on those primitives.

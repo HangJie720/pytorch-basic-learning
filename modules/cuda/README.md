@@ -2,6 +2,8 @@
 
 ## Diagrams
 
+<img src="images/cuda_call_stack.jpg" width="640" alt="CUDA runtime call stack" />
+
 <img src="images/stream_stack.png" width="640" alt="stream stack" />
 
 <img src="images/p2p_vs_copy.png" width="640" alt="P2P vs copy" />

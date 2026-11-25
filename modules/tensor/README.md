@@ -2,6 +2,8 @@
 
 ## Diagrams
 
+<img src="images/tensor_call_stack.jpg" width="640" alt="Tensor view path" />
+
 <img src="images/view_vs_clone.png" width="640" alt="view vs clone" />
 
 <img src="images/dispatch_add.png" width="640" alt="add dispatch" />
