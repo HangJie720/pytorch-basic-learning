@@ -1,5 +1,16 @@
 # autograd
 
+## Role
+
+Autograd records a **graph of `Node` / `grad_fn` objects** during the forward
+pass when tensors require grad. `loss.backward()` hands control to the
+**Engine**, which walks that graph, redispatches math kernels through the
+Dispatcher for the backward formulas, and accumulates into leaf `.grad`.
+
+Custom ops plug in via `torch.autograd.Function` (`forward` + `backward` /
+`vjp`). Compile-time stacks (AOTAutograd) reuse the same conceptual graph but
+trace it ahead of time — see [`../compile`](../compile/).
+
 ## Diagrams
 
 <img src="images/autograd_call_stack.jpg" width="640" alt="Autograd call stack" />
@@ -27,3 +38,8 @@ TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_grad_fn_chain.py
 | --- | --- |
 | Python API | `torch/autograd/` |
 | Engine | `torch/csrc/autograd/engine.cpp` |
+
+## References
+
+- [Autograd mechanics](https://pytorch.org/docs/stable/notes/autograd.html)
+- [Extending PyTorch with custom Function](https://pytorch.org/docs/stable/notes/extending.html)

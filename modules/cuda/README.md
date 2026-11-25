@@ -1,5 +1,16 @@
 # cuda
 
+## Role
+
+`torch.cuda` is the **device runtime façade**: move tensors to GPU, manage
+**streams** / events, and query devices. Under the hood, `torch/csrc/cuda` and
+`c10/cuda` install a **CUDAGuard**, pick the current stream, and allocate via
+the caching allocator. Peer-to-peer access between GPUs matters for
+symmetric-memory / some distributed paths.
+
+This module focuses on streams and device plumbing; memory policy details live
+in [`../allocator`](../allocator/), graphs in [`../cudagraph`](../cudagraph/).
+
 ## Diagrams
 
 <img src="images/cuda_call_stack.jpg" width="640" alt="CUDA runtime call stack" />
@@ -28,5 +39,9 @@ TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_peer_access.py
 | Streams | `c10/cuda/CUDAStream.cpp` |
 | Guards | `c10/cuda/CUDAGuard.h` |
 
-Allocator details: [`../allocator/`](../allocator/).  
+Allocator: [`../allocator/`](../allocator/).  
 Symmetric memory / P2P: [`../distributed/symmetric/`](../distributed/symmetric/).
+
+## References
+
+- [CUDA semantics](https://pytorch.org/docs/stable/notes/cuda.html)

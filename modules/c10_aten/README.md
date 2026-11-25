@@ -1,8 +1,30 @@
-# c10 + ATen
+# c10 + ATen (Dispatcher)
 
-Reading guide + a Dispatcher dump case.
+## Role
 
-## Diagrams
+**c10** and **ATen** are the C++ core of PyTorch:
+
+- **c10** — foundational types: `TensorImpl`, `Storage`, `Device`, `DispatchKey`,
+  CUDA stream / guard / caching allocator hooks.
+- **ATen** — operator library: schemas, the **Dispatcher**, and `native` /
+  CUDA / cuDNN implementations.
+
+Every eager `torch.add` / `F.linear` eventually becomes a Dispatcher call that
+selects a kernel by **DispatchKeySet**. That same mechanism is how backends
+(CPU, CUDA, MPS, XPU, PrivateUse1, …) and “wrap” keys (Autograd, Functionalize,
+…) plug in without rewriting Python call sites. Official multi-device writeups
+emphasize DispatchKeys as the portable routing layer across devices.
+
+## How dispatch works
+
+1. Tensors carry DispatchKeys (device, layout, autograd, …). Arguments’ keys are
+   unioned into a **DispatchKeySet**.
+2. The op (`aten::add.Tensor`, …) has a **kernel table** registered at init /
+   library load time.
+3. Dispatcher picks the **highest-priority** key that has a kernel.
+4. Wrap kernels (e.g. Autograd) do bookkeeping then **redispatch** with that key
+   masked out (“peel the onion”).
+5. A backend kernel (CUDA / CPU / …) finally runs — no further redispatch.
 
 <img src="images/dispatcher_mechanism.jpg" width="640" alt="Dispatcher mechanism" />
 
@@ -12,7 +34,27 @@ Reading guide + a Dispatcher dump case.
 
 <img src="images/dispatch_keys.png" width="640" alt="DispatchKey selection" />
 
-## Case
+## Boxed vs unboxed
+
+| Path | Use |
+| --- | --- |
+| Unboxed `Dispatcher::call` | Typed C++ / generated fast path |
+| Boxed `Dispatcher::callBoxed` | IValue stack (JIT / some Python edges) |
+
+## Upstream map
+
+| Concern | Files |
+| --- | --- |
+| Tensor / Storage | `c10/core/TensorImpl.*`, `Storage*` |
+| DispatchKey | `c10/core/DispatchKey.h` |
+| Dispatcher | `aten/src/ATen/core/dispatch/Dispatcher.*` |
+| Operator entries | `aten/src/ATen/core/dispatch/OperatorEntry.*` |
+| CUDA kernels | `aten/src/ATen/native/cuda/` |
+| Python helpers | `torch/_dispatch/`, `torch.library` |
+
+More notes: [`../../docs/dispatcher/overview.md`](../../docs/dispatcher/overview.md)
+
+## Cases
 
 | Case | Idea |
 | --- | --- |
@@ -23,12 +65,7 @@ cd modules/c10_aten
 TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_dispatch_dump.py
 ```
 
-## Source anchors
+## References
 
-| Concern | Files |
-| --- | --- |
-| Tensor / Storage | `c10/core/TensorImpl.*`, `Storage*` |
-| DispatchKey | `c10/core/DispatchKey.h` |
-| Dispatcher | `aten/src/ATen/core/dispatch/Dispatcher.*` |
-| CUDA kernels | `aten/src/ATen/native/cuda/` |
-| Attention | `aten/src/ATen/native/transformers/attention.cpp` |
+- [Challenges in PyTorch multi-device integration](https://pytorch.org/blog/pt-multidevice-integration/) — DispatchKey as the routing abstraction
+- [PyTorch Dispatcher overview (docs)](https://pytorch.org/docs/stable/notes/extending.html)

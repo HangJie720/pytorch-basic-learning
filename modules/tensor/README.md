@@ -1,5 +1,16 @@
 # tensor
 
+## Role
+
+`Tensor` is the user-facing value type; under it, **`TensorImpl` + `Storage`**
+own metadata (sizes, strides, dtype, device) and the raw data buffer. Many
+“shape” ops (`view`, `transpose`, `expand`) only rewrite metadata and **share
+Storage**; `clone` / `contiguous` allocate a new buffer when needed. Understanding
+this split explains both performance (zero-copy views) and aliasing bugs.
+
+Arithmetic still goes through the **Dispatcher** (`a + b` → `aten::add`), so
+device placement of the tensor determines which backend kernel runs.
+
 ## Diagrams
 
 <img src="images/tensor_call_stack.jpg" width="640" alt="Tensor view path" />
@@ -27,3 +38,7 @@ TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_stride_contiguity.py
 | --- | --- |
 | TensorImpl | `c10/core/TensorImpl.h` |
 | Shape ops | `aten/src/ATen/native/TensorShape.cpp` |
+
+## References
+
+- [Tensor views / contiguous docs](https://pytorch.org/docs/stable/tensor_views.html)
