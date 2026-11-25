@@ -45,3 +45,5 @@ Symmetric memory / P2P: [`../distributed/symmetric/`](../distributed/symmetric/)
 ## References
 
 - [CUDA semantics](https://pytorch.org/docs/stable/notes/cuda.html)
+- [Accelerating PyTorch with CUDA Graphs](https://pytorch.org/blog/accelerating-pytorch-with-cuda-graphs/)
+- [CUDA Stream semantics (tutorial / docs)](https://pytorch.org/docs/stable/generated/torch.cuda.Stream.html)

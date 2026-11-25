@@ -40,4 +40,6 @@ python case_export_basic.py
 ## References
 
 - [torch.export docs](https://pytorch.org/docs/stable/export.html)
+- [Export programming model tutorial](https://pytorch.org/tutorials/intermediate/torch_export_tutorial.html)
 - [PyTorch 2.0 release blog](https://pytorch.org/blog/pytorch-2.0-release/)
+- [PyTorch 2.2 blog — AOTInductor](https://pytorch.org/blog/pytorch2-2/) — compile/export deployment path

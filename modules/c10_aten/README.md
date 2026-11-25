@@ -68,4 +68,6 @@ TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_dispatch_dump.py
 ## References
 
 - [Challenges in PyTorch multi-device integration](https://pytorch.org/blog/pt-multidevice-integration/) — DispatchKey as the routing abstraction
-- [PyTorch Dispatcher overview (docs)](https://pytorch.org/docs/stable/notes/extending.html)
+- [Extending PyTorch](https://pytorch.org/docs/stable/notes/extending.html) — custom ops / Dispatcher hooks
+- [Custom C++ and CUDA Extensions](https://pytorch.org/tutorials/advanced/cpp_extension.html)
+- [PrivateUse1 / custom device backend tutorial](https://pytorch.org/tutorials/advanced/extend_dispatcher.html)

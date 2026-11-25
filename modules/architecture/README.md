@@ -52,4 +52,6 @@ eager uses.
 ## References
 
 - [PyTorch 2.0 release blog](https://pytorch.org/blog/pytorch-2.0-release/) — how compile sits next to eager
+- [Get started with PyTorch 2.0](https://pytorch.org/get-started/pytorch-2.0/)
 - [PyTorch design / overview docs](https://pytorch.org/docs/stable/community/design.html)
+- [Extending PyTorch](https://pytorch.org/docs/stable/notes/extending.html) — where custom ops plug into the stack

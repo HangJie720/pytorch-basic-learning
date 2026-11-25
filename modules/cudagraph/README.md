@@ -67,6 +67,7 @@ python case_cudagraph_basic.py
 
 ## References
 
-- [Accelerating PyTorch with CUDA Graphs](https://pytorch.org/blog/accelerating-pytorch-with-cuda-graphs/)
-- [Accelerating Generative AI with PyTorch IV](https://pytorch.org/blog/accelerating-generative-ai-4/) — compile + CUDA Graph constraints
+- [Accelerating PyTorch with CUDA Graphs](https://pytorch.org/blog/accelerating-pytorch-with-cuda-graphs/) — stream capture, replay, NCCL-in-graph
+- [Accelerating Generative AI with PyTorch IV](https://pytorch.org/blog/accelerating-generative-ai-4/) — compile + CUDA Graph pointer/shape constraints
 - [CUDA semantics](https://pytorch.org/docs/stable/notes/cuda.html) — graphs + allocator interaction
+- [CUDA Graph Trees (Inductor)](https://pytorch.org/docs/stable/torch.compiler_cudagraph_trees.html) — related compile-side graph management

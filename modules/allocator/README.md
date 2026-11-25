@@ -95,6 +95,7 @@ PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True python case_expandable_segments
 
 ## References
 
-- [CUDA semantics — memory management](https://pytorch.org/docs/stable/notes/cuda.html)
+- [CUDA semantics — memory management](https://pytorch.org/docs/stable/notes/cuda.html) (`PYTORCH_CUDA_ALLOC_CONF`, expandable segments)
 - [Accelerating PyTorch with CUDA Graphs](https://pytorch.org/blog/accelerating-pytorch-with-cuda-graphs/) — why captures need stable pools
+- [Training a 1T-Parameter MoE (allocator / stream pools)](https://pytorch.org/blog/training-a-1t-parameter-moe-on-eu-public-infrastructure-with-pytorch-and-torchtitan/) — real-world caching-allocator fragmentation across streams
 - Source note: `c10/cuda/CUDACachingAllocator.cpp` (“Expandable Segments”)

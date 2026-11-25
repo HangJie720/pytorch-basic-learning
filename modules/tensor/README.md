@@ -41,4 +41,6 @@ TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_stride_contiguity.py
 
 ## References
 
-- [Tensor views / contiguous docs](https://pytorch.org/docs/stable/tensor_views.html)
+- [Tensor views](https://pytorch.org/docs/stable/tensor_views.html)
+- [Tensors tutorial](https://pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html)
+- [Deep Learning with PyTorch: A 60 Minute Blitz](https://pytorch.org/tutorials/beginner/deep_learning_60min_blitz.html)

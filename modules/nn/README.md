@@ -42,3 +42,5 @@ TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_state_dict.py
 ## References
 
 - [nn.Module docs](https://pytorch.org/docs/stable/generated/torch.nn.Module.html)
+- [Neural Networks tutorial](https://pytorch.org/tutorials/beginner/blitz/neural_networks_tutorial.html)
+- [What is torch.nn really?](https://pytorch.org/tutorials/beginner/nn_tutorial.html)

@@ -42,4 +42,8 @@ TORCH_DEVICE_BACKEND_AUTOLOAD=0 python case_grad_fn_chain.py
 ## References
 
 - [Autograd mechanics](https://pytorch.org/docs/stable/notes/autograd.html)
+- [A Gentle Introduction to torch.autograd](https://pytorch.org/tutorials/beginner/blitz/autograd_tutorial.html)
 - [Extending PyTorch with custom Function](https://pytorch.org/docs/stable/notes/extending.html)
+- [How Computational Graphs are Constructed in PyTorch](https://pytorch.org/blog/computational-graphs-constructed-in-pytorch/)
+- [How Computational Graphs are Executed in PyTorch](https://pytorch.org/blog/how-computational-graphs-are-executed-in-pytorch/)
+- [Overview of PyTorch Autograd Engine](https://pytorch.org/blog/overview-of-pytorch-autograd-engine/)

@@ -57,6 +57,9 @@ one-sided), then FSDP / mesh / pipeline which reuse those primitives.
 
 ## References
 
+- [Introducing PyTorch FSDP API](https://pytorch.org/blog/introducing-pytorch-fully-sharded-data-parallel-api/)
+- [PyTorch 2.2 blog — DeviceMesh](https://pytorch.org/blog/pytorch2-2/)
+- [torchcomms: a modern PyTorch communications API](https://pytorch.org/blog/torchcomms/)
 - [Accelerating PyTorch with CUDA Graphs](https://pytorch.org/blog/accelerating-pytorch-with-cuda-graphs/) — NCCL + graphs
 - [PyTorch Distributed overview](https://pytorch.org/tutorials/beginner/dist_overview.html)
-- Recent stack evolution: [PyTorch 2.13](https://pytorch.org/blog/pytorch-2-13-release-blog/) / [2.14](https://pytorch.org/blog/pytorch-2-14-release-blog/) release blogs (comms backends, fault tolerance)
+- Release notes: [2.13](https://pytorch.org/blog/pytorch-2-13-release-blog/) · [2.14](https://pytorch.org/blog/pytorch-2-14-release-blog/)
